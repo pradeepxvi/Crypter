@@ -1,0 +1,31 @@
+.
+├── crtpter
+├── Crypter.code-workspace
+├── data
+│   ├── accountBackup.dat
+│   ├── account.dat
+│   ├── intro.txt
+│   ├── statementBackup.dat
+│   └── statement.dat
+├── docs
+│   ├── crypter_01.png
+│   └── fileStructure
+├── include
+│   ├── account.h
+│   ├── admin.h
+│   ├── auth.h
+│   ├── banking.h
+│   ├── utils.h
+│   └── validator.h
+├── Makefile
+├── README.md
+└── src
+    ├── account.c
+    ├── admin.c
+    ├── auth.c
+    ├── banking.c
+    ├── main.c
+    ├── utils.c
+    └── validator.c
+
+5 directories, 24 files
