@@ -3,15 +3,7 @@
 #include "account.h"
 #include "auth.h"
 #include "banking.h"
-
-void adminMenu()
-{
-    printf("\n\n0.Exit");
-    printf("\n1.Backup ");
-    printf("\n2.Restore");
-    printf("\n3.Real all data");
-    printf("\n\n>> ");
-}
+#include "loan.h"
 
 int adminAccess()
 {
@@ -57,8 +49,6 @@ void backup()
         fwrite(&user, sizeof(user), 1, backupFile);
     }
 
-    printf("\nBackup completed successfully.\n");
-
     fclose(file);
     fclose(backupFile);
 
@@ -84,10 +74,35 @@ void backup()
         fwrite(&statement, sizeof(statement), 1, backupFile);
     }
 
-    printf("\nBackup completed successfully.\n");
+    fclose(file);
+    fclose(backupFile);
+
+    // loan
+
+    file = fopen("data/loan.dat", "rb");
+    backupFile = fopen("data/loanBackup.dat", "wb");
+
+    if (!file || !backupFile)
+    {
+        perror("\nError on opening files");
+        if (file)
+            fclose(file);
+        if (backupFile)
+            fclose(backupFile);
+        return;
+    }
+
+    struct LOAN loan;
+
+    while (fread(&loan, sizeof(loan), 1, file))
+    {
+        fwrite(&loan, sizeof(loan), 1, backupFile);
+    }
 
     fclose(file);
     fclose(backupFile);
+
+    printf("\nBackup completed successfully.\n");
 }
 
 void restore()
@@ -115,7 +130,6 @@ void restore()
         fwrite(&user, sizeof(user), 1, file);
     }
 
-    printf("\nRestore completed successfully.\n");
     fclose(file);
     fclose(restoreFile);
 
@@ -135,9 +149,35 @@ void restore()
     }
 
     struct STATEMENT statement;
+
     while (fread(&statement, sizeof(statement), 1, restoreFile))
     {
         fwrite(&statement, sizeof(statement), 1, file);
+    }
+
+    fclose(file);
+    fclose(restoreFile);
+
+    // loan
+
+    file = fopen("data/loan.dat", "wb");
+    restoreFile = fopen("data/loanBackup.dat", "rb");
+
+    if (!file || !restoreFile)
+    {
+        perror("\nError on opening files");
+        if (file)
+            fclose(file);
+        if (restoreFile)
+            fclose(restoreFile);
+        return;
+    }
+
+    struct LOAN loan;
+
+    while (fread(&loan, sizeof(loan), 1, restoreFile))
+    {
+        fwrite(&loan, sizeof(loan), 1, file);
     }
 
     printf("\nRestore completed successfully.\n");
@@ -161,13 +201,13 @@ void readAdminn()
     while (fread(&user, sizeof(user), 1, file))
     {
         printf("\n\n------------------------------------------");
-        printf("\nName = %s %s", user.firstName, user.lastName);
-        printf("\nEmail = %s", user.email);
-        printf("\nAddress = %s", user.address);
-        printf("\nContact number = %s", user.contact);
-        printf("\nAccount number = %s", user.accountNumber);
-        printf("\nPassword = %s", user.password);
-        printf("\nBalance = %f", user.balance);
+        printf("\n...Name           : %s %s", user.firstName, user.lastName);
+        printf("\n...Email          : %s", user.email);
+        printf("\n...Address        : %s", user.address);
+        printf("\n...Contact number : %s", user.contact);
+        printf("\n...Account number : %s", user.accountNumber);
+        printf("\n...Password       : %s", user.password);
+        printf("\n...Balance        : %f", user.balance);
         printf("\n------------------------------------------");
     }
 }
@@ -180,7 +220,7 @@ void readALLStatementAdmin()
 
     if (!file)
     {
-        perror("\nStatement are not available");
+        perror("\n...Statement are not available !!!");
         return;
     }
 
@@ -198,13 +238,38 @@ void readALLStatementAdmin()
 void deleteAllStatementAdmin()
 {
     char confirmation;
-    printf("\nAre you sure (y/n) > _ ");
+    printf("\nAre you sure [y/n] > _ ");
     scanf(" %c", &confirmation);
 
     if (confirmation != 'y' && confirmation != 'Y')
     {
-        printf("\nOperation aborted");
+        printf("\n...Operation aborted !!!");
         return;
     }
     remove("data/statement.dat");
+}
+
+void readAllLoan()
+{
+    struct LOAN loan;
+
+    FILE *file = fopen("data/loan.dat", "rb");
+    if (!file)
+    {
+        perror("\n...Error in database !!!");
+        return;
+    }
+
+    while (fread(&loan, sizeof(loan), 1, file))
+    {
+        printf("\n\n------------------------------------------");
+        printf("\n...User         : %s %s", loan.user.firstName, loan.user.lastName);
+        printf("\n...Loan Id      : %s", loan.id);
+        printf("\n...Balance      : $%.2f", loan.loanBalance);
+        printf("\n...Annual Rate  : %.1f%%", loan.rate);
+        printf("\n...Monthly Emi  :$ %.2f", loan.emi);
+        printf("\n------------------------------------------");
+    }
+
+    fclose(file);
 }

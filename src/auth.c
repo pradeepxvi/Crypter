@@ -18,7 +18,7 @@ int login()
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        perror("Error opening account file");
+        printf("\n...Error on database !!!");
         return 0;
     }
 
@@ -39,7 +39,7 @@ int login()
                 FILE *authFile = fopen("data/authenticated.dat", "wb");
                 if (!authFile)
                 {
-                    perror("\nError opening authenticated file");
+                    printf("\n...Error on database !!!");
                     fclose(file);
                     return 0;
                 }
@@ -82,10 +82,47 @@ struct INFORMATION getAuthUser()
     return authUser;
 }
 
+struct INFORMATION getUser(char *accountNumber)
+{
+    struct INFORMATION user;
+    struct INFORMATION emptyUser = {0};
+
+    FILE *file = fopen("data/account.dat", "rb+");
+
+    while (fread(&user, sizeof(user), 1, file))
+    {
+        if (strcmp(user.accountNumber, accountNumber) == 0)
+        {
+            fclose(file);
+            return user;
+        }
+    }
+    fclose(file);
+    return emptyUser;
+}
+
 void saveAuthUser(struct INFORMATION authUser)
 {
 
-    FILE *file = fopen("data/authenticated.dat", "wb");
+    FILE *file = fopen("data/authenticated.dat", "wb+");
     fwrite(&authUser, sizeof(authUser), 1, file);
+    fclose(file);
+}
+
+void saveUser(struct INFORMATION user)
+{
+    struct INFORMATION tempUser;
+
+    FILE *file = fopen("data/account.dat", "rb+");
+    while (fread(&tempUser, sizeof(tempUser), 1, file))
+    {
+        if (strcmp(tempUser.accountNumber, user.accountNumber) == 0)
+        {
+            fseek(file, -sizeof(user), SEEK_CUR);
+            fwrite(&user, sizeof(user), 1, file);
+            fclose(file);
+            return;
+        }
+    }
     fclose(file);
 }

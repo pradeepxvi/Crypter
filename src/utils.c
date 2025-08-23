@@ -54,6 +54,7 @@ void displayAdminMenu()
     printf("\n[3] Get all data");
     printf("\n[4] Read all statement");
     printf("\n[5] Delete all statement");
+    printf("\n[6] Read all Loan Data");
     printf("\n[0] Exit");
     printf("\n\n[admin] > _");
 }
@@ -78,6 +79,20 @@ void displayBankingMenu()
     printf("\n[1] Deposit");
     printf("\n[2] Withdraw");
     printf("\n[3] See statement");
+    printf("\n[0] Back");
+    printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
+    printf(" > _");
+}
+
+void displayLoanMenu()
+{
+    struct INFORMATION authUser = getAuthUser();
+
+    printf("\n");
+    printf("\n[1] Request Loan");
+    printf("\n[2] Pay Emi");
+    printf("\n[3] Complete loan");
+    printf("\n[4] Get Loan info");
     printf("\n[0] Back");
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" > _");

@@ -13,10 +13,9 @@ struct STATEMENT
 };
 
 void saveStatement(struct STATEMENT statement);
-struct STATEMENT getStatement();
 
 void deposit();
 void withdraw();
 
-void readAllStatement();
+void readStatement();
 #endif

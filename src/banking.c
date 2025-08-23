@@ -14,14 +14,6 @@ void saveStatement(struct STATEMENT statement)
     fwrite(&statement, sizeof(statement), 1, file);
     fclose(file);
 }
-struct STATEMENT getStatement()
-{
-    struct STATEMENT statement;
-    FILE *file = fopen("data/statement.dat", "rb");
-    fread(&statement, sizeof(statement), 1, file);
-    fclose(file);
-    return statement;
-}
 
 void deposit()
 {
@@ -34,40 +26,15 @@ void deposit()
 
     if (amount <= 100)
     {
-        printf("Invalid amount. Deposit must be greater than 100.\n");
+        printf("\n...Invalid amount. Deposit must be greater than 100 !!!");
         return;
     }
 
-    struct INFORMATION user;
-
-    FILE *file = fopen("data/account.dat", "rb+");
-    if (file == NULL)
-    {
-        perror("Error opening account file");
-        return;
-    }
-
-    while (fread(&user, sizeof(user), 1, file) == 1)
-    {
-        if (strcmp(user.accountNumber, authUser.accountNumber) == 0)
-        {
-
-            struct STATEMENT statement;
-            strcpy(statement.date, getCurrentDateTime());
-            strcpy(statement.transaction, "deposit");
-            statement.amount = amount;
-            statement.user = authUser;
-            saveStatement(statement);
-
-            user.balance += amount;
-            fseek(file, -sizeof(user), SEEK_CUR);
-            fwrite(&user, sizeof(user), 1, file);
-            saveAuthUser(user);
-            break;
-        }
-    }
-    fclose(file);
-};
+    struct INFORMATION user = getUser(authUser.accountNumber);
+    authUser.balance += amount;
+    saveAuthUser(authUser);
+    saveUser(authUser);
+}
 
 void withdraw()
 {
@@ -80,43 +47,20 @@ void withdraw()
 
     if (amount > authUser.balance)
     {
-        printf("Out of balance");
+        printf("\n...Out of balance !!!");
         return;
     }
 
-    struct INFORMATION user;
-
-    FILE *file = fopen("data/account.dat", "rb+");
-    if (file == NULL)
-    {
-        perror("Error opening account file");
-        return;
-    }
-
-    while (fread(&user, sizeof(user), 1, file) == 1)
-    {
-        if (strcmp(user.accountNumber, authUser.accountNumber) == 0)
-        {
-            struct STATEMENT statement;
-            strcpy(statement.date, getCurrentDateTime());
-            strcpy(statement.transaction, "withdraw");
-            statement.amount = amount;
-            statement.user = authUser;
-            saveStatement(statement);
-
-            fseek(file, -sizeof(user), SEEK_CUR);
-            user.balance -= amount;
-            fwrite(&user, sizeof(user), 1, file);
-            saveAuthUser(user);
-            break;
-        }
-    }
-    fclose(file);
+    struct INFORMATION user = getUser(authUser.accountNumber);
+    authUser.balance -= amount;
+    saveAuthUser(authUser);
+    saveUser(authUser);
 };
 
-void readAllStatement()
+void readStatement()
 {
     struct INFORMATION authUser = getAuthUser();
+
     struct STATEMENT statement;
     FILE *file = fopen("data/statement.dat", "rb");
 

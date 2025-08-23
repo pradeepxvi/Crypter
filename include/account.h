@@ -18,7 +18,6 @@ struct INFORMATION
 // crud
 void Register();
 void readData();
-void updateDate();
 void deleteAccount();
 
 #endif

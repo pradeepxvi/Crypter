@@ -6,9 +6,12 @@
 #include "auth.h"
 #include "admin.h"
 #include "banking.h"
+#include "loan.h"
 
 int main()
 {
+
+    remove("data/authenticated.dat");
     displayIntro();
     displayUnAuthMenu();
 
@@ -63,14 +66,41 @@ int main()
                     withdraw();
                     break;
                 case 3:
-                    readAllStatement();
+                    readStatement();
                     break;
                 }
                 break;
+
             case 3:
+                displayLoanMenu();
+
+                int loanMenu;
+                scanf(" %d", &loanMenu);
+
+                switch (loanMenu)
+                {
+                case 0:
+                    break;
+                case 1:
+                    requestLoan();
+                    break;
+                case 2:
+                    payEmi();
+                    break;
+                case 3:
+                    loanPaid();
+                    break;
+                case 4:
+                    getLoanInfo();
+                    break;
+                default:
+                    printf("\nEnter valid operation");
+                    break;
+                }
                 break;
             case 0:
                 logout();
+                break;
             }
         }
     }
@@ -104,6 +134,9 @@ int main()
                 break;
             case 5:
                 deleteAllStatementAdmin();
+                break;
+            case 6:
+                readAllLoan();
                 break;
             case 0:
                 logout();

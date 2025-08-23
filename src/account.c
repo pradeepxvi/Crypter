@@ -73,16 +73,7 @@ void Register()
 
 void readData()
 {
-
-    FILE *file = fopen("data/authenticated.dat", "rb");
-    if (file == NULL)
-    {
-        perror("Error opening authenticated file");
-        return;
-    }
-
-    struct INFORMATION user;
-    fread(&user, sizeof(user), 1, file);
+    struct INFORMATION user = getAuthUser();
 
     printf("\n\n------------------------------------------");
     printf("\nName = %s %s", user.firstName, user.lastName);
@@ -93,8 +84,6 @@ void readData()
     printf("\nPassword = %s", user.password);
     printf("\nBalance = %f", user.balance);
     printf("\n------------------------------------------");
-
-    fclose(file);
 }
 
 void deleteAccount()
@@ -111,27 +100,25 @@ void deleteAccount()
 
     FILE *file = fopen("data/account.dat", "rb");
     FILE *tempFile = fopen("data/tempFile.dat", "wb");
-    FILE *authFile = fopen("data/authenticated.dat", "rb");
 
-    if (!file || !tempFile || !authFile)
+    if (!file || !tempFile)
     {
         perror("\nError opening file");
         return;
     }
 
     struct INFORMATION user;
-    struct INFORMATION loggedUser;
-    fread(&loggedUser, sizeof(loggedUser), 1, authFile);
+    struct INFORMATION authUser = getAuthUser();
 
     int deleted = 0;
 
     while (fread(&user, sizeof(user), 1, file))
     {
         if (
-            strcmp(user.accountNumber, loggedUser.accountNumber) == 0 &&
-            strcmp(user.contact, loggedUser.contact) == 0 &&
-            strcmp(user.email, loggedUser.email) == 0 &&
-            strcmp(user.password, loggedUser.password) == 0)
+            strcmp(user.accountNumber, authUser.accountNumber) == 0 &&
+            strcmp(user.contact, authUser.contact) == 0 &&
+            strcmp(user.email, authUser.email) == 0 &&
+            strcmp(user.password, authUser.password) == 0)
         {
             deleted = 1;
         }
@@ -143,7 +130,6 @@ void deleteAccount()
 
     fclose(file);
     fclose(tempFile);
-    fclose(authFile);
     remove("data/authenticated.dat");
 
     if (deleted)
