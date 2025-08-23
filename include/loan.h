@@ -14,6 +14,7 @@ struct LOAN
     float loanBalance;
     struct INFORMATION user;
     int inLoan;
+    char issueDate[100];
 };
 
 float emiCalculator(float rate, float principle, int duration);

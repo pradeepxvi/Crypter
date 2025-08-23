@@ -1,74 +1,80 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <time.h>
 #include "account.h"
-#include "validator.h"
-#include "utils.h"
+#include "admin.h"
 #include "auth.h"
+#include "banking.h"
+#include "loan.h"
+#include "utils.h"
+#include "validator.h"
 
 void Register()
 {
-    struct INFORMATION customer;
+    struct INFORMATION user;
+    strcpy(user.dateJoined, getCurrentDateTime());
 
-    printf("\n\nEnter details:");
+    printf("\n\n...Enter details:");
 
-    printf("\n\nFirst name >> ");
-    scanf(" %[^\n]", customer.firstName);
+    printf("\n\n...First name > _");
+    scanf(" %[^\n]", user.firstName);
 
-    printf("\n\nLast name >> ");
-    scanf(" %[^\n]", customer.lastName);
-
-    do
-    {
-        printf("\n\nEmail >> ");
-        scanf(" %[^\n]", customer.email);
-    } while (!validateEmail(customer.email));
-
-    printf("\n\nAddress >> ");
-    scanf(" %[^\n]", customer.address);
+    printf("\n\n...Last name > _");
+    scanf(" %[^\n]", user.lastName);
 
     do
     {
-        printf("\n\nContact >> ");
-        scanf(" %[^\n]", customer.contact);
-    } while (!validateContact(customer.contact));
+        printf("\n\n...Email > _");
+        scanf(" %[^\n]", user.email);
+    } while (!validateEmail(user.email));
+
+    printf("\n\n...Address > _");
+    scanf(" %[^\n]", user.address);
+
+    do
+    {
+        printf("\n\n...Contact > _");
+        scanf(" %[^\n]", user.contact);
+    } while (!validateContact(user.contact));
 
     char check;
-    printf("\nKeep the account number same as contact (y/n) >> ");
+    printf("\n...Keep the account number same as contact (y/n) > _");
     scanf(" %c", &check);
 
     if (check == 'y' || check == 'Y')
     {
-        strcpy(customer.accountNumber, customer.contact);
+        strcpy(user.accountNumber, user.contact);
     }
     else
     {
         do
         {
-            printf("\n\nAccount number >> ");
-            scanf(" %[^\n]", customer.accountNumber);
-        } while (!validateAccountNumber(customer.accountNumber));
+            printf("\n\n...Account number > _");
+            scanf(" %[^\n]", user.accountNumber);
+        } while (!validateAccountNumber(user.accountNumber));
     }
 
     do
     {
-        printf("\n\nPassword >> ");
-        scanf(" %[^\n]", customer.password);
-    } while (!validatePassword(customer.password));
+        printf("\n\nPassword > _");
+        scanf(" %[^\n]", user.password);
+    } while (!validatePassword(user.password));
 
-    customer.balance = 0.0;
+    user.balance = 0.0;
 
     FILE *file = fopen("data/account.dat", "ab");
     if (file == NULL)
     {
-        perror("Error opening file");
+        printf("...Error opening file !!!");
         return;
     }
 
-    fwrite(&customer, sizeof(customer), 1, file);
+    fwrite(&user, sizeof(user), 1, file);
     fclose(file);
 
-    printf("\nAccount created successfully!\n");
+    printf("\n...Account created successfully\n");
 }
 
 void readData()
@@ -82,7 +88,8 @@ void readData()
     printf("\nContact number = %s", user.contact);
     printf("\nAccount number = %s", user.accountNumber);
     printf("\nPassword = %s", user.password);
-    printf("\nBalance = %f", user.balance);
+    printf("\nBalance = %.2f", user.balance);
+    printf("\nDate joined = %s", user.dateJoined);
     printf("\n------------------------------------------");
 }
 
@@ -98,6 +105,7 @@ void deleteAccount()
         return;
     }
 
+    // clear information
     FILE *file = fopen("data/account.dat", "rb");
     FILE *tempFile = fopen("data/tempFile.dat", "wb");
 
@@ -130,17 +138,59 @@ void deleteAccount()
 
     fclose(file);
     fclose(tempFile);
-    remove("data/authenticated.dat");
 
     if (deleted)
     {
         remove("data/account.dat");
         rename("data/tempFile.dat", "data/account.dat");
-        printf("\nAccount deleted successfully.");
     }
     else
     {
         printf("\nError while deleting account.");
         remove("data/tempFile.dat");
     }
+
+    // clear statement
+    file = fopen("data/statement.dat", "rb");
+    tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (!file || !tempFile)
+    {
+        perror("\nError opening file");
+        return;
+    }
+
+    struct STATEMENT statement;
+
+    deleted = 0;
+
+    while (fread(&statement, sizeof(statement), 1, file))
+    {
+        if (
+            strcmp(statement.user.accountNumber, authUser.accountNumber) == 0)
+        {
+            deleted = 1;
+        }
+        else
+        {
+            fwrite(&statement, sizeof(statement), 1, tempFile);
+        }
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    if (deleted)
+    {
+        backup();
+        remove("data/statement.dat");
+        rename("data/tempFile.dat", "data/statement.dat");
+    }
+    else
+    {
+        printf("\nError while deleting account.");
+        remove("data/tempFile.dat");
+    }
+
+    remove("data/authenticated.dat");
 }

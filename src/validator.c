@@ -1,8 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include "validator.h"
-#include "utils.h"
+#include <math.h>
+#include <time.h>
 #include "account.h"
+#include "admin.h"
+#include "auth.h"
+#include "banking.h"
+#include "loan.h"
+#include "utils.h"
 
 int validateEmail(char *email)
 {

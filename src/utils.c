@@ -1,8 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "account.h"
-#include "auth.h"
+#include <string.h>
+#include <math.h>
 #include <time.h>
+#include "account.h"
+#include "admin.h"
+#include "auth.h"
+#include "banking.h"
+#include "loan.h"
+#include "utils.h"
 
 void displayIntro()
 {
@@ -46,6 +52,7 @@ void displayMainMenu()
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" > _");
 }
+
 void displayAdminMenu()
 {
     printf("\n");
@@ -100,9 +107,17 @@ void displayLoanMenu()
 
 char *getCurrentDateTime()
 {
-    time_t t = time(NULL);
-    struct tm *dt = localtime(&t);
-    static char datetime[100];
-    strftime(datetime, sizeof(datetime), "%Y-%m-%d %H:%M:%S", dt);
-    return datetime;
+    time_t tim = time(NULL);
+    struct tm date = *localtime(&tim);
+
+    static char dateTime[100]; // <-- static!
+    sprintf(dateTime, "%.4d-%.2d-%.2d:%2d-%.2d-%.2d",
+            date.tm_year + 1900,
+            date.tm_mon + 1,
+            date.tm_mday,
+            date.tm_hour,
+            date.tm_min,
+            date.tm_sec);
+
+    return dateTime;
 }

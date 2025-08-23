@@ -1,9 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "loan.h"
+#include <time.h>
 #include "account.h"
+#include "admin.h"
 #include "auth.h"
+#include "banking.h"
+#include "loan.h"
+#include "utils.h"
 
 float emiCalculator(float rate, float principle, int duration)
 {
@@ -121,6 +126,8 @@ void requestLoan()
     loan.user = authUser;
     loan.inLoan = 1;
 
+    strcpy(loan.issueDate, getCurrentDateTime());
+
     char confirmation;
     printf("\n\n...Confirm loan application (y/n) > _ ");
     scanf(" %c", &confirmation);
@@ -145,6 +152,8 @@ void requestLoan()
     authUser.balance += loan.principle;
     saveAuthUser(authUser);
     saveUser(authUser);
+
+    saveStatement(getCurrentDateTime(), "loan_issue          ", loan.principle, loan.user);
 }
 
 void getLoanInfo()
@@ -155,10 +164,11 @@ void getLoanInfo()
 
     if (strcmp(loan.id, authUser.accountNumber) == 0)
     {
-        printf("\n...Loan Id : %s", loan.id);
-        printf("\n...Balance : $%.2f", loan.loanBalance);
+        printf("\n...Loan Id     : %s", loan.id);
+        printf("\n...Balance     : $%.2f", loan.loanBalance);
         printf("\n...Annual Rate : %.1f%%", loan.rate);
-        printf("\n...Monthly Emi  : $%.2f", loan.emi);
+        printf("\n...Monthly Emi : $%.2f", loan.emi);
+        printf("\n...Issued Date : %s", loan.issueDate);
         return;
     }
 
@@ -196,6 +206,8 @@ void payEmi()
     saveAuthUser(authUser);
     saveUser(authUser);
     saveLoan(currentUserLoan);
+
+    saveStatement(getCurrentDateTime(), "loan_emi_paid       ", currentUserLoan.emi, currentUserLoan.user);
 
     printf("\n...Emi paid");
     printf("\n...Current balance : %.2f", authUser.balance);
@@ -253,6 +265,8 @@ void loanPaid()
 
         saveAuthUser(authUser);
         saveUser(authUser);
+
+        saveStatement(getCurrentDateTime(), "loan_paid           ", loan.loanBalance, loan.user);
 
         remove("data/loan.dat");
         rename("data/tempFile.dat", "data/loan.dat");

@@ -1,8 +1,14 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
-#include "utils.h"
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include "account.h"
+#include "admin.h"
 #include "auth.h"
+#include "banking.h"
+#include "loan.h"
+#include "utils.h"
 
 int login()
 {

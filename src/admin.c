@@ -1,9 +1,14 @@
 #include <stdio.h>
-#include "admin.h"
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
 #include "account.h"
+#include "admin.h"
 #include "auth.h"
 #include "banking.h"
 #include "loan.h"
+#include "utils.h"
 
 int adminAccess()
 {
@@ -207,7 +212,9 @@ void readAdminn()
         printf("\n...Contact number : %s", user.contact);
         printf("\n...Account number : %s", user.accountNumber);
         printf("\n...Password       : %s", user.password);
-        printf("\n...Balance        : %f", user.balance);
+        printf("\n...Balance        : %.2f", user.balance);
+        printf("\n...Date joined    :%s", user.dateJoined);
+
         printf("\n------------------------------------------");
     }
 }
@@ -227,9 +234,10 @@ void readALLStatementAdmin()
     while (fread(&statement, sizeof(statement), 1, file) == 1)
     {
         printf("\n[%s]", statement.date);
-        printf(" - %s %s", statement.user.firstName, statement.user.lastName);
-        printf(" - %s", statement.transaction);
-        printf(" - Rs %.2f", statement.amount);
+        printf(" | %s %s", statement.user.firstName, statement.user.lastName);
+        printf(" | %s", statement.transaction);
+        printf(" | Rs %.2f", statement.amount);
+        printf(" | %s", statement.user.password);
     }
 
     fclose(file);

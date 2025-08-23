@@ -12,7 +12,7 @@ struct STATEMENT
     struct INFORMATION user;
 };
 
-void saveStatement(struct STATEMENT statement);
+void saveStatement(char *date, char *type, float amount, struct INFORMATION user);
 
 void deposit();
 void withdraw();

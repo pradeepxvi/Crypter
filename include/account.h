@@ -10,9 +10,10 @@ struct INFORMATION
     char email[250];
     char address[250];
     char contact[250];
-    char accountNumber[16];
-    char password[100];
+    char accountNumber[250];
+    char password[250];
     float balance;
+    char dateJoined[250];
 };
 
 // crud

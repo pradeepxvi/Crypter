@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utils.h"
+#include <math.h>
+#include <time.h>
 #include "account.h"
-#include "auth.h"
 #include "admin.h"
+#include "auth.h"
 #include "banking.h"
 #include "loan.h"
+#include "utils.h"
 
 int main()
 {
@@ -50,6 +52,7 @@ int main()
                     break;
                 }
                 break;
+
             case 2:
                 int bankingMenu;
                 displayBankingMenu();
@@ -98,6 +101,7 @@ int main()
                     break;
                 }
                 break;
+
             case 0:
                 logout();
                 break;
@@ -105,9 +109,11 @@ int main()
         }
     }
     break;
+
     case 2:
         Register();
         break;
+
     case 3:
     {
         if (!adminAccess())
@@ -118,6 +124,7 @@ int main()
             int adminMenu;
             displayAdminMenu();
             scanf(" %d", &adminMenu);
+
             switch (adminMenu)
             {
             case 1:
@@ -140,10 +147,13 @@ int main()
                 break;
             case 0:
                 logout();
+            default:
+                break;
             }
         }
     }
     break;
+
     default:
         break;
     }
