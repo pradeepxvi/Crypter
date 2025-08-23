@@ -82,14 +82,14 @@ void readData()
     struct INFORMATION user = getAuthUser();
 
     printf("\n\n------------------------------------------");
-    printf("\nName = %s %s", user.firstName, user.lastName);
-    printf("\nEmail = %s", user.email);
-    printf("\nAddress = %s", user.address);
-    printf("\nContact number = %s", user.contact);
-    printf("\nAccount number = %s", user.accountNumber);
-    printf("\nPassword = %s", user.password);
-    printf("\nBalance = %.2f", user.balance);
-    printf("\nDate joined = %s", user.dateJoined);
+    printf("\nName           : %s %s", user.firstName, user.lastName);
+    printf("\nEmail          : %s", user.email);
+    printf("\nAddress        : %s", user.address);
+    printf("\nContact number : %s", user.contact);
+    printf("\nAccount number : %s", user.accountNumber);
+    printf("\nPassword       : %s", user.password);
+    printf("\nBalance        : %.2f", user.balance);
+    printf("\nDate joined    : %s", user.dateJoined);
     printf("\n------------------------------------------");
 }
 
@@ -143,6 +143,48 @@ void deleteAccount()
     {
         remove("data/account.dat");
         rename("data/tempFile.dat", "data/account.dat");
+    }
+    else
+    {
+        printf("\nError while deleting account.");
+        remove("data/tempFile.dat");
+    }
+
+    // clear loans
+    file = fopen("data/loan.dat", "rb");
+    tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (!file || !tempFile)
+    {
+        perror("\nError opening file");
+        return;
+    }
+
+    struct LOAN loan;
+
+    deleted = 0;
+
+    while (fread(&loan, sizeof(loan), 1, file))
+    {
+        if (
+            strcmp(loan.user.accountNumber, authUser.accountNumber) == 0)
+        {
+            deleted = 1;
+        }
+        else
+        {
+            fwrite(&loan, sizeof(loan), 1, tempFile);
+        }
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    if (deleted)
+    {
+        backup();
+        remove("data/loan.dat");
+        rename("data/tempFile.dat", "data/loan.dat");
     }
     else
     {

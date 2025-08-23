@@ -14,6 +14,9 @@ run : build
 clean:
 	rm $(OUTPUT) 
 
+count:
+	cat -n src/* include/*
+
 help:
 	@echo ""
 	@echo "build  -  make build"
