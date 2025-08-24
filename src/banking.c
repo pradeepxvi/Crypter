@@ -38,7 +38,7 @@ void deposit()
         return;
     }
 
-    saveStatement(getCurrentDateTime(), "deposite            ", amount, getAuthUser());
+    saveStatement(getCurrentDateTime(), "deposite", amount, getAuthUser());
 
     struct INFORMATION user = getUser(authUser.accountNumber);
     authUser.balance += amount;
@@ -72,7 +72,7 @@ void withdraw()
     strcpy(statement.transaction, "withdraw");
     statement.user = getAuthUser();
 
-    saveStatement(getCurrentDateTime(), "withdraw            ", amount, getAuthUser());
+    saveStatement(getCurrentDateTime(), "withdraw", amount, getAuthUser());
 };
 
 void readStatement()

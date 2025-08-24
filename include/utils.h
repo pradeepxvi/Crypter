@@ -12,4 +12,7 @@ void displayAccountMenu();
 void displayBankingMenu();
 void displayLoanMenu();
 char *getCurrentDateTime();
+
+void displayFIlteredStatement();
+
 #endif

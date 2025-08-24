@@ -153,7 +153,7 @@ void requestLoan()
     saveAuthUser(authUser);
     saveUser(authUser);
 
-    saveStatement(getCurrentDateTime(), "loan_issue          ", loan.principle, loan.user);
+    saveStatement(getCurrentDateTime(), "loan_issue", loan.principle, loan.user);
 }
 
 void getLoanInfo()
@@ -207,7 +207,7 @@ void payEmi()
     saveUser(authUser);
     saveLoan(currentUserLoan);
 
-    saveStatement(getCurrentDateTime(), "loan_emi_paid       ", currentUserLoan.emi, currentUserLoan.user);
+    saveStatement(getCurrentDateTime(), "loan_emi_paid", currentUserLoan.emi, currentUserLoan.user);
 
     printf("\n...Emi paid");
     printf("\n...Current balance : %.2f", authUser.balance);
@@ -266,7 +266,7 @@ void loanPaid()
         saveAuthUser(authUser);
         saveUser(authUser);
 
-        saveStatement(getCurrentDateTime(), "loan_paid           ", loan.loanBalance, loan.user);
+        saveStatement(getCurrentDateTime(), "loan_paid", loan.loanBalance, loan.user);
 
         remove("data/loan.dat");
         rename("data/tempFile.dat", "data/loan.dat");

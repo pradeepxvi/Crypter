@@ -62,6 +62,7 @@ void displayAdminMenu()
     printf("\n[4] Read all statement");
     printf("\n[5] Delete all statement");
     printf("\n[6] Read all Loan Data");
+    printf("\n[7] Filter statement");
     printf("\n[0] Exit");
     printf("\n\n[admin] > _");
 }

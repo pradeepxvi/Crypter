@@ -9,6 +9,7 @@
 #include "banking.h"
 #include "loan.h"
 #include "utils.h"
+#include "filters.h"
 
 int main()
 {
@@ -144,6 +145,9 @@ int main()
                 break;
             case 6:
                 readAllLoan();
+                break;
+            case 7:
+                displayFIlteredStatementAdmin();
                 break;
             case 0:
                 logout();
