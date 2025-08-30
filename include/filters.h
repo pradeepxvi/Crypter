@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include "account.h"
 
 #ifndef FILTER
 #define FILTER
 
-void displayFIlteredStatementAdmin();
+void filterStatement();
+
+void filterDataByEmail();
 
 #endif

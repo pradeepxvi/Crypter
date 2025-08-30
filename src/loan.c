@@ -156,7 +156,7 @@ void requestLoan()
     saveStatement(getCurrentDateTime(), "loan_issue", loan.principle, loan.user);
 }
 
-void getLoanInfo()
+void showUserLoan()
 {
 
     struct INFORMATION authUser = getAuthUser();
@@ -164,11 +164,13 @@ void getLoanInfo()
 
     if (strcmp(loan.id, authUser.accountNumber) == 0)
     {
+        printf("\n------------------------------------------");
         printf("\n...Loan Id     : %s", loan.id);
         printf("\n...Balance     : $%.2f", loan.loanBalance);
         printf("\n...Annual Rate : %.1f%%", loan.rate);
         printf("\n...Monthly Emi : $%.2f", loan.emi);
         printf("\n...Issued Date : %s", loan.issueDate);
+        printf("\n------------------------------------------");
         return;
     }
 
@@ -214,7 +216,7 @@ void payEmi()
     printf("\n...Current loan balance : %.2f", currentUserLoan.loanBalance);
 }
 
-void loanPaid()
+void comlpeteLoan()
 {
 
     struct INFORMATION authUser = getAuthUser();

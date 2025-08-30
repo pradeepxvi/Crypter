@@ -17,8 +17,8 @@ struct INFORMATION
 };
 
 // crud
-void Register();
-void readData();
+void registerAccount();
+void showUserData();
 void deleteAccount();
 
 #endif

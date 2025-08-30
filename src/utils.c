@@ -10,6 +10,23 @@
 #include "loan.h"
 #include "utils.h"
 
+char *getCurrentDateTime()
+{
+    time_t tim = time(NULL);
+    struct tm date = *localtime(&tim);
+
+    static char dateTime[100]; // <-- static!
+    sprintf(dateTime, "%.4d-%.2d-%.2d:%2d-%.2d-%.2d",
+            date.tm_year + 1900,
+            date.tm_mon + 1,
+            date.tm_mday,
+            date.tm_hour,
+            date.tm_min,
+            date.tm_sec);
+
+    return dateTime;
+}
+
 void displayIntro()
 {
     system("clear");
@@ -53,6 +70,14 @@ void displayMainMenu()
     printf(" > _");
 }
 
+void displayFilterDataMenu()
+{
+    printf("\n");
+    printf("\n[1] Email");
+    printf("\n[0] Exit");
+    printf("\n\n> _");
+}
+
 void displayAdminMenu()
 {
     printf("\n");
@@ -63,6 +88,7 @@ void displayAdminMenu()
     printf("\n[5] Delete all statement");
     printf("\n[6] Read all Loan Data");
     printf("\n[7] Filter statement");
+    printf("\n[8] Filter data");
     printf("\n[0] Exit");
     printf("\n\n[admin] > _");
 }
@@ -104,21 +130,4 @@ void displayLoanMenu()
     printf("\n[0] Back");
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" > _");
-}
-
-char *getCurrentDateTime()
-{
-    time_t tim = time(NULL);
-    struct tm date = *localtime(&tim);
-
-    static char dateTime[100]; // <-- static!
-    sprintf(dateTime, "%.4d-%.2d-%.2d:%2d-%.2d-%.2d",
-            date.tm_year + 1900,
-            date.tm_mon + 1,
-            date.tm_mday,
-            date.tm_hour,
-            date.tm_min,
-            date.tm_sec);
-
-    return dateTime;
 }

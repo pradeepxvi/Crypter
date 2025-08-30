@@ -11,7 +11,7 @@
 #include "utils.h"
 #include "validator.h"
 
-void Register()
+void registerAccount()
 {
     struct INFORMATION user;
     strcpy(user.dateJoined, getCurrentDateTime());
@@ -77,7 +77,7 @@ void Register()
     printf("\n...Account created successfully\n");
 }
 
-void readData()
+void showUserData()
 {
     struct INFORMATION user = getAuthUser();
 
@@ -182,7 +182,7 @@ void deleteAccount()
 
     if (deleted)
     {
-        backup();
+        backupData();
         remove("data/loan.dat");
         rename("data/tempFile.dat", "data/loan.dat");
     }
@@ -224,7 +224,7 @@ void deleteAccount()
 
     if (deleted)
     {
-        backup();
+        backupData();
         remove("data/statement.dat");
         rename("data/tempFile.dat", "data/statement.dat");
     }

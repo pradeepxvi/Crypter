@@ -16,6 +16,6 @@ void saveStatement(char *date, char *type, float amount, struct INFORMATION user
 
 void deposit();
 void withdraw();
+void showUserStatements();
 
-void readStatement();
 #endif

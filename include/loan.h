@@ -17,12 +17,11 @@ struct LOAN
     char issueDate[100];
 };
 
-float emiCalculator(float rate, float principle, int duration);
 struct LOAN getLoan(char *loadId);
 void saveLoan(struct LOAN loan);
 void requestLoan();
-void getLoanInfo();
+void showUserLoan();
 void payEmi();
-void loanPaid();
+void comlpeteLoan();
 
 #endif

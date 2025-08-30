@@ -75,7 +75,7 @@ void withdraw()
     saveStatement(getCurrentDateTime(), "withdraw", amount, getAuthUser());
 };
 
-void readStatement()
+void showUserStatements()
 {
     struct INFORMATION authUser = getAuthUser();
 

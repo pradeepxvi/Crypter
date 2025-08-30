@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
-#include <time.h>
 #include "account.h"
 #include "admin.h"
 #include "auth.h"
@@ -41,7 +39,7 @@ void printFilterStatementAdmin(char *type, int limit)
     fclose(file);
 }
 
-void displayFIlteredStatementAdmin()
+void filterStatement()
 {
 
     while (1)
@@ -83,5 +81,63 @@ void displayFIlteredStatementAdmin()
             printFilterStatementAdmin("loan_paid", limit);
             break;
         }
+    }
+}
+
+void filterDataByEmail()
+{
+
+    FILE *file = fopen("data/account.dat", "rb");
+
+    if (!file)
+    {
+        perror("\nError opening file");
+        return;
+    }
+
+    struct INFORMATION temp;
+    struct INFORMATION *users = NULL;
+    int count = 0;
+
+    while (fread(&temp, sizeof(struct INFORMATION), 1, file))
+    {
+        users = realloc(users, (count + 1) * sizeof(struct INFORMATION));
+
+        if (!users)
+        {
+            printf("... Memory Error !!!");
+            return;
+        }
+        users[count] = temp;
+        count++;
+    }
+    fclose(file);
+
+    for (int i = 0; i < count; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+
+            if (strcmp(users[i].email, users[j].email) > 0)
+            {
+                temp = users[i];
+                users[i] = users[j];
+                users[j] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        printf("\n\n------------------------------------------");
+        printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
+        printf("\nEmail          : %s", users[i].email);
+        printf("\nAddress        : %s", users[i].address);
+        printf("\nContact number : %s", users[i].contact);
+        printf("\nAccount number : %s", users[i].accountNumber);
+        printf("\nPassword       : %s", users[i].password);
+        printf("\nBalance        : %.2f", users[i].balance);
+        printf("\nDate joined    : %s", users[i].dateJoined);
+        printf("\n------------------------------------------");
     }
 }

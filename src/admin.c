@@ -30,7 +30,7 @@ int adminAccess()
     return 0;
 }
 
-void backup()
+void backupData()
 {
 
     // account
@@ -110,7 +110,7 @@ void backup()
     printf("\nBackup completed successfully.\n");
 }
 
-void restore()
+void restoreData()
 {
 
     // account
@@ -190,7 +190,7 @@ void restore()
     fclose(restoreFile);
 }
 
-void readAdminn()
+void showAllUserData()
 {
 
     FILE *file = fopen("data/account.dat", "rb");
@@ -219,7 +219,7 @@ void readAdminn()
     }
 }
 
-void readALLStatementAdmin()
+void showStatements()
 {
     struct STATEMENT statement;
 
@@ -243,7 +243,7 @@ void readALLStatementAdmin()
     fclose(file);
 }
 
-void deleteAllStatementAdmin()
+void deleteStatements()
 {
     char confirmation;
     printf("\nAre you sure [y/n] > _ ");
@@ -257,7 +257,7 @@ void deleteAllStatementAdmin()
     remove("data/statement.dat");
 }
 
-void readAllLoan()
+void showLoans()
 {
     struct LOAN loan;
 

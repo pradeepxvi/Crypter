@@ -2,11 +2,11 @@
 #define ADMIN
 
 int adminAccess();
-void backup();
-void restore();
-void readAdminn();
-void readALLStatementAdmin();
-void readAllLoan();
-void deleteAllStatementAdmin();
+void backupData();
+void restoreData();
+void showAllUserData();
+void showStatements();
+void deleteStatements();
+void showLoans();
 
 #endif

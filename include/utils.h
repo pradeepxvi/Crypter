@@ -4,6 +4,8 @@
 #ifndef INTRO
 #define INTRO
 
+char *getCurrentDateTime();
+
 void displayIntro();
 void displayUnAuthMenu();
 void displayAdminMenu();
@@ -11,8 +13,7 @@ void displayMainMenu();
 void displayAccountMenu();
 void displayBankingMenu();
 void displayLoanMenu();
-char *getCurrentDateTime();
 
-void displayFIlteredStatement();
+void displayFilterDataMenu();
 
 #endif
