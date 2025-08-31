@@ -81,11 +81,18 @@ void transferBalance()
     printf("\nAccount number > _");
     scanf(" %[^\n]", accountNumber);
 
+    struct INFORMATION sender = getAuthUser();
+
+    if (strcmp(accountNumber, sender.accountNumber) == 0)
+    {
+        printf("\n...Cannot transfre to own !!!");
+        return;
+    }
+
     int gotUser = 0;
     FILE *file = fopen("data/account.dat", "rb");
 
     struct INFORMATION temp;
-    struct INFORMATION sender = getAuthUser();
     struct INFORMATION receiver;
 
     while (fread(&temp, sizeof(struct INFORMATION), 1, file))
