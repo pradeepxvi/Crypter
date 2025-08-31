@@ -75,6 +75,80 @@ void withdraw()
     saveStatement(getCurrentDateTime(), "withdraw", amount, getAuthUser());
 };
 
+void transferBalance()
+{
+    char accountNumber[100];
+    printf("\nAccount number > _");
+    scanf(" %[^\n]", accountNumber);
+
+    int gotUser = 0;
+    FILE *file = fopen("data/account.dat", "rb");
+
+    struct INFORMATION temp;
+    struct INFORMATION sender = getAuthUser();
+    struct INFORMATION receiver;
+
+    while (fread(&temp, sizeof(struct INFORMATION), 1, file))
+    {
+
+        if (strcmp(temp.accountNumber, accountNumber) == 0)
+        {
+            gotUser = 1;
+            receiver = temp;
+            break;
+        }
+    }
+
+    fclose(file);
+    if (gotUser == 0)
+    {
+        printf("\n...User not found !!!");
+        return;
+    }
+
+    printf("\n\n------------------------------------------");
+    printf("\n...Receiver Details");
+    printf("\n...Name           : %s %s", receiver.firstName, receiver.lastName);
+    printf("\n...Contact number : %s", receiver.contact);
+    printf("\n...Account number : %s", receiver.accountNumber);
+    printf("\n------------------------------------------");
+
+    char confirmation;
+    printf("\n\nConfirm ? [y/n] > _");
+    scanf(" %c", &confirmation);
+
+    if (confirmation != 'y' && confirmation != 'Y')
+    {
+        printf("\n...Operation cancelled by user !!!");
+        return;
+    }
+
+    float amount;
+    printf("\n...amount > _");
+    scanf(" %f", &amount);
+
+    if (amount < 1000)
+    {
+        printf("\n...Transfer at least $1000 !!!");
+        return;
+    }
+
+    if (amount > sender.balance)
+    {
+        printf("\n...Out of balance !!!");
+        return;
+    }
+
+    sender.balance -= amount;
+    receiver.balance += amount;
+
+    printf("\n...$%.2f is successfully transferred to %s %s", amount, receiver.firstName, receiver.lastName);
+
+    saveAuthUser(sender);
+    saveUser(sender);
+    saveUser(receiver);
+}
+
 void showUserStatements()
 {
     struct INFORMATION authUser = getAuthUser();

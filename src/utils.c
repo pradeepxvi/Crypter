@@ -74,6 +74,8 @@ void displayFilterDataMenu()
 {
     printf("\n");
     printf("\n[1] Email");
+    printf("\n[2] Balance low to high");
+    printf("\n[3] Balance high to low");
     printf("\n[0] Exit");
     printf("\n\n> _");
 }
@@ -113,6 +115,7 @@ void displayBankingMenu()
     printf("\n[1] Deposit");
     printf("\n[2] Withdraw");
     printf("\n[3] See statement");
+    printf("\n[4] Transfer Balance");
     printf("\n[0] Back");
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" > _");

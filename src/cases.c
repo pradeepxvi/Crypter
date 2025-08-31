@@ -35,54 +35,65 @@ void accountCase()
 void bankingCase()
 {
 
-    displayBankingMenu();
-
-    int choice;
-    scanf(" %d", &choice);
-
-    switch (choice)
+    while (1)
     {
-    case 1:
-        deposit();
-        break;
-    case 2:
-        withdraw();
-        break;
-    case 3:
-        showUserStatements();
-        break;
-    case 0:
-        break;
-    default:
-        break;
+
+        displayBankingMenu();
+
+        int choice;
+        scanf(" %d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            deposit();
+            break;
+        case 2:
+            withdraw();
+            break;
+        case 3:
+            showUserStatements();
+            break;
+        case 4:
+            transferBalance();
+            break;
+        case 0:
+            return;
+        default:
+            break;
+        }
     }
 }
 
 void loanCase()
 {
-    displayLoanMenu();
-
-    int choice;
-    scanf(" %d", &choice);
-
-    switch (choice)
+    while (1)
     {
-    case 1:
-        requestLoan();
-        break;
-    case 2:
-        payEmi();
-        break;
-    case 3:
-        comlpeteLoan();
-        break;
-    case 4:
-        showUserLoan();
-        break;
-    case 0:
-        break;
-    default:
-        break;
+
+        displayLoanMenu();
+
+        int choice;
+        scanf(" %d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            requestLoan();
+            break;
+        case 2:
+            payEmi();
+            break;
+        case 3:
+            comlpeteLoan();
+            break;
+        case 4:
+            showUserLoan();
+            break;
+        case 0:
+            return;
+        default:
+            break;
+        }
     }
 }
 
@@ -129,6 +140,12 @@ void filterDataCase()
         {
         case 1:
             filterDataByEmail();
+            break;
+        case 2:
+            filterDataByBalance(1);
+            break;
+        case 3:
+            filterDataByBalance(0);
             break;
         case 0:
             return;

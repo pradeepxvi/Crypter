@@ -74,6 +74,7 @@ void registerAccount()
     fwrite(&user, sizeof(user), 1, file);
     fclose(file);
 
+    backupData();
     printf("\n...Account created successfully\n");
 }
 
@@ -87,7 +88,6 @@ void showUserData()
     printf("\nAddress        : %s", user.address);
     printf("\nContact number : %s", user.contact);
     printf("\nAccount number : %s", user.accountNumber);
-    printf("\nPassword       : %s", user.password);
     printf("\nBalance        : %.2f", user.balance);
     printf("\nDate joined    : %s", user.dateJoined);
     printf("\n------------------------------------------");
@@ -109,9 +109,9 @@ void deleteAccount()
     FILE *file = fopen("data/account.dat", "rb");
     FILE *tempFile = fopen("data/tempFile.dat", "wb");
 
-    if (!file || !tempFile)
+    if (file == NULL || tempFile == NULL)
     {
-        perror("\nError opening file");
+        printf("\n...Database Error !!!");
         return;
     }
 
@@ -122,11 +122,7 @@ void deleteAccount()
 
     while (fread(&user, sizeof(user), 1, file))
     {
-        if (
-            strcmp(user.accountNumber, authUser.accountNumber) == 0 &&
-            strcmp(user.contact, authUser.contact) == 0 &&
-            strcmp(user.email, authUser.email) == 0 &&
-            strcmp(user.password, authUser.password) == 0)
+        if (strcmp(user.accountNumber, authUser.accountNumber) == 0)
         {
             deleted = 1;
         }
@@ -141,37 +137,35 @@ void deleteAccount()
 
     if (deleted)
     {
-        remove("data/account.dat");
-        rename("data/tempFile.dat", "data/account.dat");
+        if (remove("data/account.dat") == 1 || rename("data/tempFile.dat", "data/account.dat") == 1)
+        {
+            printf("\n...File Error  1!!!");
+            return;
+        }
     }
     else
     {
-        printf("\nError while deleting account.");
+        printf("\n...Error while deleting account !!!");
         remove("data/tempFile.dat");
+        return;
     }
 
     // clear loans
     file = fopen("data/loan.dat", "rb");
     tempFile = fopen("data/tempFile.dat", "wb");
 
-    if (!file || !tempFile)
+    if (file == NULL || tempFile == NULL)
+
     {
-        perror("\nError opening file");
+        printf("...Database Error !!!");
         return;
     }
 
     struct LOAN loan;
 
-    deleted = 0;
-
     while (fread(&loan, sizeof(loan), 1, file))
     {
-        if (
-            strcmp(loan.user.accountNumber, authUser.accountNumber) == 0)
-        {
-            deleted = 1;
-        }
-        else
+        if (strcmp(loan.user.accountNumber, authUser.accountNumber) != 0)
         {
             fwrite(&loan, sizeof(loan), 1, tempFile);
         }
@@ -180,40 +174,27 @@ void deleteAccount()
     fclose(file);
     fclose(tempFile);
 
-    if (deleted)
+    if (remove("data/loan.dat") == 1 || rename("data/tempFile.dat", "data/loan.dat") == 1)
     {
-        backupData();
-        remove("data/loan.dat");
-        rename("data/tempFile.dat", "data/loan.dat");
-    }
-    else
-    {
-        printf("\nError while deleting account.");
-        remove("data/tempFile.dat");
+        printf("\n...File Error 2!!!");
+        return;
     }
 
     // clear statement
     file = fopen("data/statement.dat", "rb");
     tempFile = fopen("data/tempFile.dat", "wb");
 
-    if (!file || !tempFile)
+    if (file == NULL || tempFile == NULL)
     {
-        perror("\nError opening file");
+        printf("...Database Error !!!");
         return;
     }
 
     struct STATEMENT statement;
 
-    deleted = 0;
-
     while (fread(&statement, sizeof(statement), 1, file))
     {
-        if (
-            strcmp(statement.user.accountNumber, authUser.accountNumber) == 0)
-        {
-            deleted = 1;
-        }
-        else
+        if (strcmp(statement.user.accountNumber, authUser.accountNumber) != 0)
         {
             fwrite(&statement, sizeof(statement), 1, tempFile);
         }
@@ -222,17 +203,16 @@ void deleteAccount()
     fclose(file);
     fclose(tempFile);
 
-    if (deleted)
+    if (remove("data/statement.dat") == 1 || rename("data/tempFile.dat", "data/statement.dat") == 1)
     {
-        backupData();
-        remove("data/statement.dat");
-        rename("data/tempFile.dat", "data/statement.dat");
-    }
-    else
-    {
-        printf("\nError while deleting account.");
-        remove("data/tempFile.dat");
+        printf("\n...File Error 3!!!");
+        return;
     }
 
-    remove("data/authenticated.dat");
+    if (remove("data/authenticated.dat") == 1)
+    {
+        printf("\n...Auth File Error !!!");
+        return;
+    }
+    printf("\n...User Deleted !!!");
 }

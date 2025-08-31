@@ -1,0 +1,40 @@
+[1] Login
+        [1] Account
+                [1] Get Account Info
+                [2] Delete Account
+                [0] Back
+        [2] Banking
+                [1] Deposit
+                [2] Withdraw
+                [3] See statement
+                [4] Transfer Balance
+                [0] Back
+        [3] Loan
+                [1] Request Loan
+                [2] Pay Emi
+                [3] Complete loan
+                [4] Get Loan info
+                [0] Back
+        [0] Logout
+[2] Register
+[3] Admin Access
+        [1] Backup
+        [2] Restore
+        [3] Get all data
+        [4] Read all statement
+        [5] Delete all statement
+        [6] Read all Loan Data
+        [7] Filter statement
+                [1] Diposit
+                [2] Withdraw
+                [3] Loan issue
+                [4] EMI paid
+                [5] Loan paid
+                [0] Exit
+        [8] Filter data
+                [1] Email
+                [2] Balance low to high
+                [3] Balance high to low
+                [0] Exit
+        [0] Exit
+[0] Exit

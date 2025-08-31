@@ -166,7 +166,7 @@ void showUserLoan()
     {
         printf("\n------------------------------------------");
         printf("\n...Loan Id     : %s", loan.id);
-        printf("\n...Balance     : $%.2f", loan.loanBalance);
+        printf("\n...Loan Balance     : $%.2f", loan.loanBalance);
         printf("\n...Annual Rate : %.1f%%", loan.rate);
         printf("\n...Monthly Emi : $%.2f", loan.emi);
         printf("\n...Issued Date : %s", loan.issueDate);

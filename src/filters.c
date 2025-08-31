@@ -45,11 +45,11 @@ void filterStatement()
     while (1)
     {
         printf("\n");
-        printf("\n[1] All diposite");
-        printf("\n[2] All Withdraw");
-        printf("\n[3] Loan issued");
-        printf("\n[4] All emi paid");
-        printf("\n[5] All loan paid");
+        printf("\n[1] Diposit");
+        printf("\n[2] Withdraw");
+        printf("\n[3] Loan issue");
+        printf("\n[4] EMI paid");
+        printf("\n[5] Loan paid");
         printf("\n[0] Exit");
         printf("\n\n[admin] > _");
 
@@ -135,9 +135,70 @@ void filterDataByEmail()
         printf("\nAddress        : %s", users[i].address);
         printf("\nContact number : %s", users[i].contact);
         printf("\nAccount number : %s", users[i].accountNumber);
-        printf("\nPassword       : %s", users[i].password);
         printf("\nBalance        : %.2f", users[i].balance);
         printf("\nDate joined    : %s", users[i].dateJoined);
         printf("\n------------------------------------------");
     }
+}
+
+void filterDataByBalance(int status)
+{
+
+    FILE *file = fopen("data/account.dat", "rb");
+    if (!file)
+    {
+        printf("... Database error !!!");
+        return;
+    }
+
+    int count = 0;
+    struct INFORMATION *users = NULL;
+    struct INFORMATION temp;
+
+    while (fread(&temp, sizeof(struct INFORMATION), 1, file) == 1)
+    {
+        users = realloc(users, (count + 1) * sizeof(struct INFORMATION));
+        users[count] = temp;
+        count++;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        for (int j = i + 1; j < count; j++)
+        {
+            if (status == 1)
+            {
+                if (users[i].balance > users[j].balance)
+                {
+                    temp = users[i];
+                    users[i] = users[j];
+                    users[j] = temp;
+                }
+            }
+            else
+            {
+                if (users[i].balance < users[j].balance)
+                {
+                    temp = users[i];
+                    users[i] = users[j];
+                    users[j] = temp;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        printf("\n\n------------------------------------------");
+        printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
+        printf("\nEmail          : %s", users[i].email);
+        printf("\nAddress        : %s", users[i].address);
+        printf("\nContact number : %s", users[i].contact);
+        printf("\nAccount number : %s", users[i].accountNumber);
+        printf("\nBalance        : %.2f", users[i].balance);
+        printf("\nDate joined    : %s", users[i].dateJoined);
+        printf("\n------------------------------------------");
+    }
+
+    fclose(file);
 }

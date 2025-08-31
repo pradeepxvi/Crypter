@@ -211,10 +211,8 @@ void showAllUserData()
         printf("\n...Address        : %s", user.address);
         printf("\n...Contact number : %s", user.contact);
         printf("\n...Account number : %s", user.accountNumber);
-        printf("\n...Password       : %s", user.password);
-        printf("\n...Balance        : %.2f", user.balance);
-        printf("\n...Date joined    :%s", user.dateJoined);
-
+        printf("\n...Balance        : $%.2f", user.balance);
+        printf("\n...Date joined    : %s", user.dateJoined);
         printf("\n------------------------------------------");
     }
 }
@@ -273,9 +271,9 @@ void showLoans()
         printf("\n\n------------------------------------------");
         printf("\n...User         : %s %s", loan.user.firstName, loan.user.lastName);
         printf("\n...Loan Id      : %s", loan.id);
-        printf("\n...Balance      : $%.2f", loan.loanBalance);
+        printf("\n...Loan Balance : $%.2f", loan.loanBalance);
         printf("\n...Annual Rate  : %.1f%%", loan.rate);
-        printf("\n...Monthly Emi  :$ %.2f", loan.emi);
+        printf("\n...Monthly Emi  : $%.2f", loan.emi);
         printf("\n------------------------------------------");
     }
 

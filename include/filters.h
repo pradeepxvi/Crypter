@@ -8,4 +8,6 @@ void filterStatement();
 
 void filterDataByEmail();
 
+void filterDataByBalance(int status);
+
 #endif
