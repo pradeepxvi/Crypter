@@ -1,22 +1,16 @@
 CC = gcc
+FLAGS = include
 SRC = src/*.c
-CFLAGS = include
-OUTPUT = crtpter
+OUTPUT = crypter
 
-.PHONY: build run clean help // avoid conflict with files same named as command
+.PHONY: build run clean help
 
 build:
-	$(CC) $(SRC) -I$(CFLAGS) -o $(OUTPUT) -lm
-
-run : build
+	$(CC) $(SRC) -I$(FLAGS) -o $(OUTPUT) -lm
+run:build
 	./$(OUTPUT)
-
 clean:
-	rm $(OUTPUT) 
-
-count:
-	cat -n src/* include/*
-
+	rm $(OUTPUT)
 help:
 	@echo ""
 	@echo "build  -  make build"

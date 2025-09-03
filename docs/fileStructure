@@ -1,27 +1,27 @@
 .
-├── crtpter
 ├── Crypter.code-workspace
 ├── data
-│  ├── accountBackup.dat
-│  ├── account.dat
-│  ├── intro.txt
-│  ├── loanBackup.dat
-│  ├── loan.dat
-│  ├── statementBackup.dat
-│  └── statement.dat
+│   ├── accountBackup.dat
+│   ├── account.dat
+│   ├── intro.txt
+│   ├── loanBackup.dat
+│   ├── loan.dat
+│   ├── statementBackup.dat
+│   └── statement.dat
 ├── docs
-│  ├── crypter_01.png
-│  └── fileStructure
+│   ├── crypter_01.png
+│   ├── fileStructure
+│   └── programStructure.txt
 ├── include
-│  ├── account.h
-│  ├── admin.h
-│  ├── auth.h
-│  ├── banking.h
-│  ├── cases.h
-│  ├── filters.h
-│  ├── loan.h
-│  ├── utils.h
-│  └── validator.h
+│   ├── account.h
+│   ├── admin.h
+│   ├── auth.h
+│   ├── banking.h
+│   ├── cases.h
+│   ├── filters.h
+│   ├── loan.h
+│   ├── utils.h
+│   └── validator.h
 ├── Makefile
 ├── README.md
 └── src
