@@ -28,22 +28,24 @@ void deposit()
     struct INFORMATION authUser = getAuthUser();
 
     float amount;
+
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" amount > _");
     scanf(" %f", &amount);
 
-    if (amount <= 100)
+    if (amount <= 100 || amount > 100000)
     {
-        printf("\n...Invalid amount. Deposit must be greater than 100 !!!");
+        printf("\n...Deposit $100 to $100000!!!");
         return;
     }
 
-    saveStatement(getCurrentDateTime(), "deposite", amount, getAuthUser());
-
-    struct INFORMATION user = getUser(authUser.accountNumber);
     authUser.balance += amount;
+
     saveAuthUser(authUser);
     saveUser(authUser);
+
+    saveStatement(getCurrentDateTime(), "deposite", amount, authUser);
+    displayBalanceInfo("...Deposited", authUser.balance - amount, amount, authUser.balance);
 }
 
 void withdraw()
@@ -51,6 +53,7 @@ void withdraw()
     struct INFORMATION authUser = getAuthUser();
 
     float amount;
+
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" amount > _");
     scanf(" %f", &amount);
@@ -61,18 +64,19 @@ void withdraw()
         return;
     }
 
-    struct INFORMATION user = getUser(authUser.accountNumber);
+    if (amount > 100000)
+    {
+        printf("\n...Withdraw $100 to $ 100000!!!");
+        return;
+    }
+
     authUser.balance -= amount;
+
     saveAuthUser(authUser);
     saveUser(authUser);
 
-    struct STATEMENT statement;
-    statement.amount = amount;
-    strcpy(statement.date, getCurrentDateTime());
-    strcpy(statement.transaction, "withdraw");
-    statement.user = getAuthUser();
-
-    saveStatement(getCurrentDateTime(), "withdraw", amount, getAuthUser());
+    saveStatement(getCurrentDateTime(), "Withdrew", amount, authUser);
+    displayBalanceInfo("...Withdrew", authUser.balance + amount, amount, authUser.balance);
 };
 
 void transferBalance()
@@ -85,29 +89,12 @@ void transferBalance()
 
     if (strcmp(accountNumber, sender.accountNumber) == 0)
     {
-        printf("\n...Cannot transfre to own !!!");
+        printf("\n...Cannot transfer to own !!!");
         return;
     }
 
-    int gotUser = 0;
-    FILE *file = fopen("data/account.dat", "rb");
-
-    struct INFORMATION temp;
-    struct INFORMATION receiver;
-
-    while (fread(&temp, sizeof(struct INFORMATION), 1, file))
-    {
-
-        if (strcmp(temp.accountNumber, accountNumber) == 0)
-        {
-            gotUser = 1;
-            receiver = temp;
-            break;
-        }
-    }
-
-    fclose(file);
-    if (gotUser == 0)
+    struct INFORMATION receiver = getUser(accountNumber);
+    if (strlen(receiver.accountNumber) == 0)
     {
         printf("\n...User not found !!!");
         return;
@@ -151,9 +138,11 @@ void transferBalance()
 
     printf("\n...$%.2f is successfully transferred to %s %s", amount, receiver.firstName, receiver.lastName);
 
+    displayBalanceInfo("...Trasnferred", sender.balance + amount, amount, sender.balance);
     saveAuthUser(sender);
     saveUser(sender);
     saveUser(receiver);
+    saveStatement(getCurrentDateTime(), "Trasfer", amount, sender);
 }
 
 void showUserStatements()

@@ -134,3 +134,10 @@ void displayLoanMenu()
     printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
     printf(" > _");
 }
+
+void displayBalanceInfo(char *transaction, float currentBalance, float amount, float newBalance)
+{
+    printf("\n%-20s : $%.2f", "...Current Balance", currentBalance);
+    printf("\n%-20s : $%.2f", transaction, amount);
+    printf("\n%-20s : $%.2f", "...New Balance", newBalance);
+}

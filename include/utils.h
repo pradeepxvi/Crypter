@@ -13,6 +13,7 @@ void displayMainMenu();
 void displayAccountMenu();
 void displayBankingMenu();
 void displayLoanMenu();
+void displayBalanceInfo(char *transaction, float currentBalance, float amount, float newBalance);
 
 void displayFilterDataMenu();
 

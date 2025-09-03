@@ -25,7 +25,7 @@ int isLoaned()
 
     if (tempLoan.inLoan == 1)
     {
-        printf("\n...You are already in loan !!!");
+
         return 1;
     }
     return 0;
@@ -82,7 +82,10 @@ void requestLoan()
 {
 
     if (isLoaned())
+    {
+        printf("\n...You are already in loan !!!");
         return;
+    }
 
     struct INFORMATION authUser = getAuthUser();
     struct LOAN loan;
@@ -154,10 +157,17 @@ void requestLoan()
     saveUser(authUser);
 
     saveStatement(getCurrentDateTime(), "loan_issue", loan.principle, loan.user);
+    displayBalanceInfo("...Loan issued", authUser.balance - loan.principle, loan.principle, authUser.balance);
 }
 
 void showUserLoan()
 {
+
+    if (!isLoaned())
+    {
+        printf("\n...You are not in loan !!!");
+        return;
+    }
 
     struct INFORMATION authUser = getAuthUser();
     struct LOAN loan = getLoan(authUser.accountNumber);
@@ -166,7 +176,7 @@ void showUserLoan()
     {
         printf("\n------------------------------------------");
         printf("\n...Loan Id     : %s", loan.id);
-        printf("\n...Loan Balance     : $%.2f", loan.loanBalance);
+        printf("\n...Loan Balance: $%.2f", loan.loanBalance);
         printf("\n...Annual Rate : %.1f%%", loan.rate);
         printf("\n...Monthly Emi : $%.2f", loan.emi);
         printf("\n...Issued Date : %s", loan.issueDate);
@@ -179,6 +189,13 @@ void showUserLoan()
 
 void payEmi()
 {
+
+    if (!isLoaned())
+    {
+        printf("\n...You are not in loan !!!");
+        return;
+    }
+
     struct INFORMATION authUser = getAuthUser();
 
     struct LOAN currentUserLoan = getLoan(authUser.accountNumber);
@@ -208,16 +225,18 @@ void payEmi()
     saveAuthUser(authUser);
     saveUser(authUser);
     saveLoan(currentUserLoan);
-
     saveStatement(getCurrentDateTime(), "loan_emi_paid", currentUserLoan.emi, currentUserLoan.user);
-
-    printf("\n...Emi paid");
-    printf("\n...Current balance : %.2f", authUser.balance);
-    printf("\n...Current loan balance : %.2f", currentUserLoan.loanBalance);
+    displayBalanceInfo("...Emi paid", authUser.balance + emi, emi, authUser.balance);
 }
 
 void comlpeteLoan()
 {
+
+    if (!isLoaned())
+    {
+        printf("\n...You are not in loan !!!");
+        return;
+    }
 
     struct INFORMATION authUser = getAuthUser();
     struct LOAN tempLoan = getLoan(authUser.accountNumber);
@@ -246,8 +265,7 @@ void comlpeteLoan()
 
     while (fread(&loan, sizeof(loan), 1, file))
     {
-        if (
-            strcmp(loan.id, authUser.accountNumber) == 0)
+        if (strcmp(loan.id, authUser.accountNumber) == 0)
         {
             paid = 1;
         }
@@ -269,6 +287,7 @@ void comlpeteLoan()
         saveUser(authUser);
 
         saveStatement(getCurrentDateTime(), "loan_paid", loan.loanBalance, loan.user);
+        displayBalanceInfo("...Loan paid", authUser.balance + tempLoan.loanBalance, tempLoan.loanBalance, authUser.balance);
 
         remove("data/loan.dat");
         rename("data/tempFile.dat", "data/loan.dat");

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 #include <time.h>
 #include "account.h"
 #include "admin.h"
@@ -40,10 +41,10 @@ void registerAccount()
     } while (!validateContact(user.contact));
 
     char check;
-    printf("\n...Keep the account number same as contact (y/n) > _");
+    printf("\n...Keep the account number same as contact [y/n] > _");
     scanf(" %c", &check);
 
-    if (check == 'y' || check == 'Y')
+    if (tolower(check) == 'y')
     {
         strcpy(user.accountNumber, user.contact);
     }
@@ -67,7 +68,7 @@ void registerAccount()
     FILE *file = fopen("data/account.dat", "ab");
     if (file == NULL)
     {
-        printf("...Error opening file !!!");
+        printf("...Database Error !!!");
         return;
     }
 

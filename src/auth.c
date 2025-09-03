@@ -120,12 +120,13 @@ void saveUser(struct INFORMATION user)
     struct INFORMATION tempUser;
 
     FILE *file = fopen("data/account.dat", "rb+");
-    while (fread(&tempUser, sizeof(tempUser), 1, file))
+    while (fread(&tempUser, sizeof(struct INFORMATION), 1, file))
     {
         if (strcmp(tempUser.accountNumber, user.accountNumber) == 0)
         {
-            fseek(file, -sizeof(user), SEEK_CUR);
-            fwrite(&user, sizeof(user), 1, file);
+            fseek(file, -sizeof(struct INFORMATION), SEEK_CUR);
+            fwrite(&user, sizeof(struct INFORMATION), 1, file);
+
             fclose(file);
             return;
         }
