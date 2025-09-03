@@ -12,13 +12,15 @@
 void printFilterStatementAdmin(char *type, int limit)
 {
     FILE *file = fopen("data/statement.dat", "rb");
-    if (!file)
+    if (file == NULL)
     {
         printf("...Database error !!!");
+        return;
     }
-    struct STATEMENT statement;
 
+    struct STATEMENT statement;
     int count = 0;
+
     while (fread(&statement, sizeof(statement), 1, file))
     {
         if (strcmp(statement.transaction, type) == 0)
@@ -27,7 +29,6 @@ void printFilterStatementAdmin(char *type, int limit)
             printf(" | %s %s", statement.user.firstName, statement.user.lastName);
             printf(" | %s", statement.transaction);
             printf(" | Rs %.2f", statement.amount);
-            printf(" | %s", statement.user.password);
             count++;
         }
         if (limit == count)
@@ -89,9 +90,9 @@ void filterDataByEmail()
 
     FILE *file = fopen("data/account.dat", "rb");
 
-    if (!file)
+    if (file == NULL)
     {
-        perror("\nError opening file");
+        printf("...Database error !!!");
         return;
     }
 
@@ -105,7 +106,7 @@ void filterDataByEmail()
 
         if (!users)
         {
-            printf("... Memory Error !!!");
+            printf("\n... Memory Error !!!");
             return;
         }
         users[count] = temp;
@@ -145,9 +146,9 @@ void filterDataByBalance(int status)
 {
 
     FILE *file = fopen("data/account.dat", "rb");
-    if (!file)
+    if (file == NULL)
     {
-        printf("... Database error !!!");
+        printf("...Database error !!!");
         return;
     }
 
@@ -158,6 +159,12 @@ void filterDataByBalance(int status)
     while (fread(&temp, sizeof(struct INFORMATION), 1, file) == 1)
     {
         users = realloc(users, (count + 1) * sizeof(struct INFORMATION));
+        if (!users)
+        {
+            printf("\n... Memory Error !!!");
+            return;
+        }
+
         users[count] = temp;
         count++;
     }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <math.h>
 #include <time.h>
 #include "account.h"
@@ -25,7 +26,6 @@ int isLoaned()
 
     if (tempLoan.inLoan == 1)
     {
-
         return 1;
     }
     return 0;
@@ -38,7 +38,7 @@ struct LOAN getLoan(char *loadId)
     FILE *file = fopen("data/loan.dat", "rb+");
     if (file == NULL)
     {
-        perror("\n...Error on database !!!");
+        printf("\n...Database Error !!!");
         return emptyLoan;
     }
 
@@ -62,7 +62,7 @@ void saveLoan(struct LOAN loan)
     FILE *loanFile = fopen("data/loan.dat", "rb+");
     if (loanFile == NULL)
     {
-        perror("\n...Error on database !!!");
+        printf("\n...Database Error !!!");
         return;
     }
     while (fread(&tempLoan, sizeof(tempLoan), 1, loanFile))
@@ -132,20 +132,19 @@ void requestLoan()
     strcpy(loan.issueDate, getCurrentDateTime());
 
     char confirmation;
-    printf("\n\n...Confirm loan application (y/n) > _ ");
+    printf("\n\n...Confirm loan application [y/n] > _ ");
     scanf(" %c", &confirmation);
 
-    if (confirmation != 'y' && confirmation != 'Y')
+    if (tolower(confirmation) != 'y')
     {
         printf("\n...Operation aborted !!!");
         return;
     }
 
     FILE *file = fopen("data/loan.dat", "ab");
-
-    if (!file)
+    if (file == NULL)
     {
-        perror("\n...Error on opening file !!!");
+        printf("\n...Database Error !!!");
         return;
     }
 
@@ -156,7 +155,7 @@ void requestLoan()
     saveAuthUser(authUser);
     saveUser(authUser);
 
-    saveStatement(getCurrentDateTime(), "loan_issue", loan.principle, loan.user);
+    saveStatement("loan_issue", loan.principle, loan.user);
     displayBalanceInfo("...Loan issued", authUser.balance - loan.principle, loan.principle, authUser.balance);
 }
 
@@ -172,19 +171,13 @@ void showUserLoan()
     struct INFORMATION authUser = getAuthUser();
     struct LOAN loan = getLoan(authUser.accountNumber);
 
-    if (strcmp(loan.id, authUser.accountNumber) == 0)
-    {
-        printf("\n------------------------------------------");
-        printf("\n...Loan Id     : %s", loan.id);
-        printf("\n...Loan Balance: $%.2f", loan.loanBalance);
-        printf("\n...Annual Rate : %.1f%%", loan.rate);
-        printf("\n...Monthly Emi : $%.2f", loan.emi);
-        printf("\n...Issued Date : %s", loan.issueDate);
-        printf("\n------------------------------------------");
-        return;
-    }
-
-    printf("\n...You have no any loan data");
+    printf("\n------------------------------------------");
+    printf("\n...Loan Id     : %s", loan.id);
+    printf("\n...Loan Balance: $%.2f", loan.loanBalance);
+    printf("\n...Annual Rate : %.1f%%", loan.rate);
+    printf("\n...Monthly Emi : $%.2f", loan.emi);
+    printf("\n...Issued Date : %s", loan.issueDate);
+    printf("\n------------------------------------------");
 }
 
 void payEmi()
@@ -197,7 +190,6 @@ void payEmi()
     }
 
     struct INFORMATION authUser = getAuthUser();
-
     struct LOAN currentUserLoan = getLoan(authUser.accountNumber);
 
     if (authUser.balance < currentUserLoan.emi)
@@ -212,7 +204,7 @@ void payEmi()
     printf("\n...Confirm Payment? [y/n] > _ ");
     scanf(" %c", &confirmation);
 
-    if (confirmation != 'y' && confirmation != 'Y')
+    if (tolower(confirmation) != 'y')
     {
         printf("\n...Operation aborted !!!");
         return;
@@ -225,7 +217,7 @@ void payEmi()
     saveAuthUser(authUser);
     saveUser(authUser);
     saveLoan(currentUserLoan);
-    saveStatement(getCurrentDateTime(), "loan_emi_paid", currentUserLoan.emi, currentUserLoan.user);
+    saveStatement("loan_emi_paid", currentUserLoan.emi, currentUserLoan.user);
     displayBalanceInfo("...Emi paid", authUser.balance + emi, emi, authUser.balance);
 }
 
@@ -240,6 +232,7 @@ void comlpeteLoan()
 
     struct INFORMATION authUser = getAuthUser();
     struct LOAN tempLoan = getLoan(authUser.accountNumber);
+    struct LOAN loan;
 
     if (authUser.balance < tempLoan.loanBalance)
     {
@@ -249,20 +242,14 @@ void comlpeteLoan()
 
     FILE *file = fopen("data/loan.dat", "rb");
     FILE *tempFile = fopen("data/tempFile.dat", "wb");
-    FILE *authFile = fopen("data/authenticated.dat", "rb");
 
-    if (!file || !tempFile || !authFile)
+    if (file == NULL || tempFile == NULL)
     {
-        perror("\nError opening file");
+        perror("\n...Database Error !!!");
         return;
     }
 
-    struct LOAN loan;
-
-    fread(&authUser, sizeof(authUser), 1, authFile);
-
     int paid = 0;
-
     while (fread(&loan, sizeof(loan), 1, file))
     {
         if (strcmp(loan.id, authUser.accountNumber) == 0)
@@ -277,7 +264,6 @@ void comlpeteLoan()
 
     fclose(file);
     fclose(tempFile);
-    fclose(authFile);
 
     if (paid)
     {
@@ -286,16 +272,17 @@ void comlpeteLoan()
         saveAuthUser(authUser);
         saveUser(authUser);
 
-        saveStatement(getCurrentDateTime(), "loan_paid", loan.loanBalance, loan.user);
+        saveStatement("loan_paid", loan.loanBalance, loan.user);
         displayBalanceInfo("...Loan paid", authUser.balance + tempLoan.loanBalance, tempLoan.loanBalance, authUser.balance);
 
         remove("data/loan.dat");
         rename("data/tempFile.dat", "data/loan.dat");
+
         printf("\n...Loan paid successfully.");
     }
     else
     {
-        printf("\nError occur.");
+        printf("\n...Error occur !!!");
         remove("data/tempFile.dat");
     }
 }

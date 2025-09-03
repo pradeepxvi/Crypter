@@ -34,16 +34,14 @@ void displayIntro()
 
     if (file == NULL)
     {
-        perror("Error opening intro file");
+        printf("\n...Database Error !!!");
         return;
     }
-
     char ch;
     while ((ch = fgetc(file)) != EOF)
     {
         printf("%c", ch);
     }
-
     fclose(file);
 }
 

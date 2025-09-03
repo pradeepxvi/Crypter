@@ -37,7 +37,6 @@ void bankingCase()
 
     while (1)
     {
-
         displayBankingMenu();
 
         int choice;

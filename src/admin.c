@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <math.h>
 #include <time.h>
 #include "account.h"
@@ -37,9 +38,9 @@ void backupData()
     FILE *file = fopen("data/account.dat", "rb");
     FILE *backupFile = fopen("data/accountBackup.dat", "wb");
 
-    if (!file || !backupFile)
+    if (file == NULL || backupFile == NULL)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (backupFile)
@@ -64,7 +65,7 @@ void backupData()
 
     if (!file || !backupFile)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (backupFile)
@@ -89,7 +90,7 @@ void backupData()
 
     if (!file || !backupFile)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (backupFile)
@@ -120,7 +121,7 @@ void restoreData()
 
     if (!file || !restoreFile)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (restoreFile)
@@ -145,7 +146,7 @@ void restoreData()
 
     if (!file || !restoreFile)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (restoreFile)
@@ -170,7 +171,7 @@ void restoreData()
 
     if (!file || !restoreFile)
     {
-        perror("\nError on opening files");
+        printf("\n...Database Error !!!");
         if (file)
             fclose(file);
         if (restoreFile)
@@ -185,9 +186,10 @@ void restoreData()
         fwrite(&loan, sizeof(loan), 1, file);
     }
 
-    printf("\nRestore completed successfully.\n");
     fclose(file);
     fclose(restoreFile);
+
+    printf("\n...Restore completed successfully.\n");
 }
 
 void showAllUserData()
@@ -195,9 +197,9 @@ void showAllUserData()
 
     FILE *file = fopen("data/account.dat", "rb");
 
-    if (!file)
+    if (file == NULL)
     {
-        perror("\nError on opening file");
+        printf("\n...Database Error !!!");
         return;
     }
 
@@ -219,25 +221,22 @@ void showAllUserData()
 
 void showStatements()
 {
-    struct STATEMENT statement;
 
     FILE *file = fopen("data/statement.dat", "rb");
-
-    if (!file)
+    if (file == NULL)
     {
-        perror("\n...Statement are not available !!!");
+        printf("\n...Database Error !!!");
         return;
     }
 
+    struct STATEMENT statement;
     while (fread(&statement, sizeof(statement), 1, file) == 1)
     {
         printf("\n[%s]", statement.date);
         printf(" | %s %s", statement.user.firstName, statement.user.lastName);
         printf(" | %s", statement.transaction);
         printf(" | Rs %.2f", statement.amount);
-        printf(" | %s", statement.user.password);
     }
-
     fclose(file);
 }
 
@@ -247,25 +246,26 @@ void deleteStatements()
     printf("\nAre you sure [y/n] > _ ");
     scanf(" %c", &confirmation);
 
-    if (confirmation != 'y' && confirmation != 'Y')
+    if (tolower(confirmation) != 'y')
     {
         printf("\n...Operation aborted !!!");
         return;
     }
     remove("data/statement.dat");
+    printf("\n...Statement deleted successfully");
 }
 
 void showLoans()
 {
-    struct LOAN loan;
 
     FILE *file = fopen("data/loan.dat", "rb");
-    if (!file)
+    if (file == NULL)
     {
-        perror("\n...Error in database !!!");
+        printf("\n...Database Error !!!");
         return;
     }
 
+    struct LOAN loan;
     while (fread(&loan, sizeof(loan), 1, file))
     {
         printf("\n\n------------------------------------------");
@@ -276,6 +276,5 @@ void showLoans()
         printf("\n...Monthly Emi  : $%.2f", loan.emi);
         printf("\n------------------------------------------");
     }
-
     fclose(file);
 }

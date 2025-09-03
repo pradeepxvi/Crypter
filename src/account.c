@@ -41,6 +41,7 @@ void registerAccount()
     } while (!validateContact(user.contact));
 
     char check;
+
     printf("\n...Keep the account number same as contact [y/n] > _");
     scanf(" %c", &check);
 
@@ -97,12 +98,12 @@ void showUserData()
 void deleteAccount()
 {
     char confirmation;
-    printf("\nAre you sure (y/n) > _ ");
+    printf("\nAre you sure [y/n] > _ ");
     scanf(" %c", &confirmation);
 
-    if (confirmation != 'y' && confirmation != 'Y')
+    if (tolower(confirmation) != 'y')
     {
-        printf("\nOperation aborted");
+        printf("\n...Operation aborted !!!");
         return;
     }
 
@@ -133,22 +134,27 @@ void deleteAccount()
         }
     }
 
-    fclose(file);
-    fclose(tempFile);
+    if (file)
+        fclose(file);
+    if (tempFile)
+        fclose(tempFile);
 
     if (deleted)
     {
         if (remove("data/account.dat") == 1 || rename("data/tempFile.dat", "data/account.dat") == 1)
         {
-            printf("\n...File Error  1!!!");
+            printf("\n...File Error !!!");
             return;
         }
     }
     else
     {
         printf("\n...Error while deleting account !!!");
-        remove("data/tempFile.dat");
-        return;
+        if (remove("data/tempFile.dat") == 1)
+        {
+            printf("\n...File Error !!!");
+            return;
+        }
     }
 
     // clear loans
@@ -172,12 +178,14 @@ void deleteAccount()
         }
     }
 
-    fclose(file);
-    fclose(tempFile);
+    if (file)
+        fclose(file);
+    if (tempFile)
+        fclose(tempFile);
 
     if (remove("data/loan.dat") == 1 || rename("data/tempFile.dat", "data/loan.dat") == 1)
     {
-        printf("\n...File Error 2!!!");
+        printf("\n...File Error !!!");
         return;
     }
 
@@ -187,7 +195,7 @@ void deleteAccount()
 
     if (file == NULL || tempFile == NULL)
     {
-        printf("...Database Error !!!");
+        printf("\n...Database Error !!!");
         return;
     }
 
@@ -201,12 +209,14 @@ void deleteAccount()
         }
     }
 
-    fclose(file);
-    fclose(tempFile);
+    if (file)
+        fclose(file);
+    if (tempFile)
+        fclose(tempFile);
 
     if (remove("data/statement.dat") == 1 || rename("data/tempFile.dat", "data/statement.dat") == 1)
     {
-        printf("\n...File Error 3!!!");
+        printf("\n...File Error !!!");
         return;
     }
 

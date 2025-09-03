@@ -78,23 +78,33 @@ void logout()
 
 struct INFORMATION getAuthUser()
 {
-    struct INFORMATION authUser;
 
+    struct INFORMATION emptyAuthUser = {0};
     FILE *file = fopen("data/authenticated.dat", "rb");
+    if (file == NULL)
+    {
+        printf("\n...Database Error !!!");
+        return emptyAuthUser;
+    }
 
+    struct INFORMATION authUser;
     fread(&authUser, sizeof(authUser), 1, file);
     fclose(file);
-
     return authUser;
 }
 
 struct INFORMATION getUser(char *accountNumber)
 {
-    struct INFORMATION user;
     struct INFORMATION emptyUser = {0};
 
     FILE *file = fopen("data/account.dat", "rb+");
+    if (file == NULL)
+    {
+        printf("\n...Database Error !!!");
+        return emptyUser;
+    }
 
+    struct INFORMATION user;
     while (fread(&user, sizeof(user), 1, file))
     {
         if (strcmp(user.accountNumber, accountNumber) == 0)
@@ -110,7 +120,12 @@ struct INFORMATION getUser(char *accountNumber)
 void saveAuthUser(struct INFORMATION authUser)
 {
 
-    FILE *file = fopen("data/authenticated.dat", "wb+");
+    FILE *file = fopen("data/authenticated.dat", "wb");
+    if (file == NULL)
+    {
+        printf("\n...Database Error !!!");
+        return;
+    }
     fwrite(&authUser, sizeof(authUser), 1, file);
     fclose(file);
 }
@@ -120,6 +135,11 @@ void saveUser(struct INFORMATION user)
     struct INFORMATION tempUser;
 
     FILE *file = fopen("data/account.dat", "rb+");
+    if (file == NULL)
+    {
+        printf("\n...Database Error !!!");
+        return;
+    }
     while (fread(&tempUser, sizeof(struct INFORMATION), 1, file))
     {
         if (strcmp(tempUser.accountNumber, user.accountNumber) == 0)
