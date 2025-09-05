@@ -1,5 +1,5 @@
 CC = gcc
-FLAGS = include
+FLAGS = flags
 SRC = src/*.c
 OUTPUT = crypter
 
