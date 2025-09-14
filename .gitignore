@@ -62,3 +62,4 @@ src/read.c
 
 test*
 flags/colors.h
+.gitignore

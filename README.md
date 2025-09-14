@@ -203,6 +203,6 @@ make help
 
 ## 🏆 Contributors
 
-- **[**Pradeep**](https://www.pradeepxvi.me)** — _Lead Developer_
-- **Abhistan** — _Documentation Specialist_
-- **Binod** — _Presentation Designer_
+- **[**Pradeep Kunwar**](https://www.pradeepxvi.me)** — _Lead Developer_
+- **Abhistan Poudel** — _Documentation Specialist_
+- **Binod Bharati** — _Presentation Designer_
