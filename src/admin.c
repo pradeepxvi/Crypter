@@ -34,7 +34,7 @@ int adminAccess()
     }
 
     // if doesn't matched return 0
-    printf("\nAdmin authentication failed");
+    errorMessage("Admin authentication failed");
     return 0;
 }
 

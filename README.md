@@ -160,6 +160,13 @@ Data persistence is implemented using **binary files** and session-based authent
 
 **Make sure you have GCC installed.**
 
+### Clone Repo
+
+```bash
+git clone https://github.com/pradeepxvi/Crypter
+cd Crypter
+```
+
 ### Build
 
 ```bash
