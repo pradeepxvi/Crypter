@@ -1,111 +1,201 @@
-# Crypter
+# Crypter – Secure Bank Management System
 
-**A Secure Bank Management System**
+Crypter is a **CLI-based secure bank management system** written in **C programming** as a 2nd semester university project.  
+It simulates the core features of a banking system with authentication, account management, transactions, loan services, and admin-level operations.  
+Data persistence is implemented using **binary files** and session-based authentication.
 
-## Introduction
+## 🎯 Objectives
 
-Crypter is a simple bank management system built in C, focused on security and practical learning. It supports account creation, secure login via PIN/password, money deposit/withdrawal, transaction history tracking, loans, and account deletion, all with robust file-based data storage. The project is designed to help users and students understand C programming concepts such as structures, file I/O, and authentication.
+- To design and implement a **secure, modular bank management system** using C programming.
+- To demonstrate the use of **file handling** for persistent storage of user, transaction, and loan data.
+- To apply **session-based authentication** for controlled access to banking services.
+- To gain practical experience in **structured programming**, modular code organization, and use of **header/source files**.
+- To provide a **menu-driven CLI interface** that is user-friendly and easy to navigate.
+- To simulate **real-world banking operations** such as account management, deposits, withdrawals, transfers, and loans.
+- To implement **admin-level controls** (backup, restore, data filtering) to mimic real financial system requirements.
 
-## Objectives
+## 📌 Why This Project is Necessary
 
-- Implement secure PIN/password authentication for banking operations.
-- Allow account holders to deposit and withdraw money after authentication.
-- Record and maintain transaction history for each account using separate files.
-- Provide the option to securely delete an account.
-- Support loan requests, EMI calculation, and repayments.
-- Persist data using file handling for account info, loan info, and transaction logs.
-- Enhance understanding of structured programming, file operations, and basic security mechanisms in C.
+- **Understanding Core Banking Logic**: Helps students understand how banking systems handle accounts, transactions, and loans.
+- **Practical Use of C Programming**: Strengthens knowledge of file handling, structures, functions, and modular programming in C.
+- **Security Awareness**: Introduces authentication and controlled access concepts for secure system design.
+- **Data Management Skills**: Shows how to maintain, back up, and restore critical financial data.
+- **Real-World Application**: Provides a small-scale simulation of real banking software used in financial institutions.
+- **Foundation for Advanced Projects**: Can be extended with encryption, database integration (SQL), or GUI in higher semesters.
+- **Team/Individual Learning**: Encourages systematic problem-solving, debugging, and project documentation practices.
 
-## Features
+## 🚀 Features
 
-- **Register & Login**: Users can register with name, email, contact, account number, and password. Login is secured by password/PIN.
-- **Account Management**: View your account details; securely delete your account.
-- **Banking Operations**: Deposit and withdraw money; view transaction statement/history.
-- **Loan Management**:
-  - **Apply for a Loan**: Request loans between 100,000 and 10,000,000 units with a fixed annual interest rate (5%).
-  - **EMI Calculation**: The system calculates monthly installments (EMI) using your requested amount, interest rate, and chosen duration (6–120 months).
-  - **View Loan Info**: See your loan balance, EMI, and interest rate at any time.
-  - **Pay EMI**: Make monthly payments toward your loan directly from your bank balance.
-  - **Pay Off Loan**: Settle the remaining loan amount in full if you have enough balance.
-  - **Loan Eligibility**: Only one active loan per account is allowed.
-- **Admin Access**: Backup and restore all data, read/delete all statements (admin-only).
-- **File-based Data Storage**: All user, loan, and transaction data is stored in files for persistence.
+### 👤 User Access
 
-## How to Use
+- **Login & Logout** with session authentication
+  - A file `authenticated.dat` is created on login and deleted on logout.
+- **Register** new users securely.
 
-1. **Clone the Repository**
+### 🏦 Account Management
 
-   ```sh
-   git clone https://github.com/pradeepxvi/Crypter
-   cd Crypter
-   ```
+- View account information
+- Delete account
 
-2. **Build the Project**
+### 💳 Banking Services
 
-   - Make sure you're in the root directory (`Crypter`)
-   - Compile the code:
-     ```sh
-     make
-     ```
+- Deposit funds
+- Withdraw funds
+- View transaction statement
+- Transfer funds
 
-3. **Run the Program**
+### 📄 Loan Services
 
-   ```sh
-   make run
-   ```
+- Request loan
+- Pay EMI
+- Complete loan
+- View loan information
 
-4. **Other Commands**
-   - Clear output files:
-     ```sh
-     make clean
-     ```
-   - Display available make commands:
-     ```sh
-     make help
-     ```
+### 👨‍💼 Admin Access
 
-## Usage Flow
+- Backup and restore data
+- View all user data
+- Read all transactions
+- Delete all transactions
+- View all loan data
+- Filter transactions by type (Deposit, Withdraw, Loan issue, EMI paid, Loan paid)
+- Filter user data (by email / sort balance ascending or descending)
 
-- On running, the program displays an introduction and a menu:
-  - [1] Login
-  - [2] Register
-  - [3] Admin Access
-  - [0] Exit
-- After login, access menus for:
-  - **Account Management**: View info, delete your account.
-  - **Banking**: Deposit, withdraw, view statement.
-  - **Loan**: Apply for loan, view loan details, pay EMI, pay off loan.
-  - **Logout**
-- Admins can backup/restore data and manage statements.
-
-## Example
+## 📂 Project Structure
 
 ```
-$ make
-$ make run
+.
+├── data
+│   ├── accountBackup.dat
+│   ├── account.dat
+│   ├── intro.txt
+│   ├── loanBackup.dat
+│   ├── loan.dat
+│   ├── statementBackup.dat
+│   └── statement.dat
+├── docs
+│   ├── crypter_01.png
+│   ├── fileStructure
+│   ├── programStructure.png
+│   └── programStructure.txt
+├── flags
+│   ├── account.h
+│   ├── admin.h
+│   ├── auth.h
+│   ├── banking.h
+│   ├── cases.h
+│   ├── filters.h
+│   ├── loan.h
+│   ├── utils.h
+│   └── validator.h
+├── Makefile
+├── README.md
+└── src
+    ├── account.c
+    ├── admin.c
+    ├── auth.c
+    ├── banking.c
+    ├── cases.c
+    ├── filters.c
+    ├── loan.c
+    ├── main.c
+    ├── utils.c
+    └── validator.c
+
 ```
 
-Follow the on-screen menu for registration, login, banking, and loan operations.
+## 🖥️ Program sturcture
 
-## Loan Feature Details
+```
+[ 1 ] LOGIN
+        [ 1 ] ACCOUNT MANAGEMENT
+                [ 1 ] VIEW ACCOUNT INFORMATION
+                [ 2 ] DELETE ACCOUNT
+                [ 0 ] RETURN
 
-- **Applying for a Loan**:  
-  Users can request a loan between 100,000 and 10,000,000 units. The annual interest rate is fixed at 5%. The duration must be between 6 and 120 months.
-- **EMI Calculation**:  
-  Monthly EMI is automatically calculated and shown before confirmation.
-- **Loan Approval**:  
-  After confirming, the loan amount is credited to the user's account.
-- **Repayment**:  
-  Users can pay EMI monthly or pay off the entire remaining balance. Payments are deducted from the user's account balance.
-- **Loan Status**:  
-  Only one active loan per user is allowed. You can always view your current loan status, EMI, and balance.
+        [ 2 ] BANKING SERVICES
+                [ 1 ] DEPOSIT FUNDS
+                [ 2 ] WITHDRAW FUNDS
+                [ 3 ] VIEW STATEMENT
+                [ 4 ] TRANSFER FUNDS
+                [ 0 ] RETURN
 
-## Project Members
+        [ 3 ] LOAN SERVICES
+                [ 1 ] REQUEST LOAN
+                [ 2 ] PAY EMI
+                [ 3 ] COMPLETE LOAN
+                [ 4 ] VIEW LOAN INFORMATION
+                [ 0 ] RETURN
 
-- Pradeep Kunwar - Developer
-- Abhishant Poudel - Researcher
-- Binod Bharati - Designer
+        [ 0 ] LOGOUT
 
----
+[ 2 ] REGISTER
 
-Feel free to explore and contribute!
+[ 3 ] ADMIN ACCESS
+        [ 1 ] BACKUP DATA
+        [ 2 ] RESTORE DATA
+        [ 3 ] VIEW ALL USER DATA
+        [ 4 ] READ ALL TRANSACTIONS
+        [ 5 ] DELETE ALL TRANSACTIONS
+        [ 6 ] VIEW ALL LOAN DATA
+
+        [ 7 ] FILTER TRANSACTIONS
+                [ 1 ] Diposit
+                [ 2 ] Withdraw
+                [ 3 ] Loan issue
+                [ 4 ] EMI paid
+                [ 5 ] Loan paid
+                [ 0 ] Exit
+
+        [ 8 ] FILTER USER DATA
+                [ 1 ] FILTER BY EMAIL
+                [ 2 ] SORT BALANCE LOW TO HIGH
+                [ 3 ] SORT BALANCE HIGH TO LOW
+                [ 0 ] RETURN
+        [ 0 ] EXIT
+[ 0 ] EXIT
+```
+
+## 🛠️ Build & Run Instructions
+
+**Make sure you have GCC installed.**
+
+### Build
+
+```bash
+make build
+```
+
+### Run
+
+```bash
+make run
+```
+
+### Clean output
+
+```bash
+make clean
+```
+
+### Help
+
+```bash
+make help
+```
+
+## 🔧 Technologies Used
+
+- C Programming (Modularized with header & source files)
+
+- File Handling for persistent storage
+
+- Makefile for build automation
+
+- CLI Interface (Terminal based)
+
+## 🏆 Contributors
+
+- **[**Pradeep**](https://www.pradeepxvi.me)** — _Lead Developer_
+- **Abhistan** — _Documentation Specialist_
+- **Binod** — _Presentation Designer_

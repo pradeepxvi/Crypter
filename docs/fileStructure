@@ -1,5 +1,4 @@
 .
-├── Crypter.code-workspace
 ├── data
 │   ├── accountBackup.dat
 │   ├── account.dat
@@ -36,5 +35,3 @@
     ├── main.c
     ├── utils.c
     └── validator.c
-
-5 directories, 33 files
