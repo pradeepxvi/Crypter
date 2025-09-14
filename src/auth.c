@@ -15,17 +15,17 @@ int login()
     char id[100];
     char password[100];
 
-    printf("\n\n[Id / email / contact] : ");
+    prompt("crypter", "Email / account number");
     scanf(" %[^\n]", id);
 
-    printf("\n[Password] : ");
+    prompt("crypter", "Password");
     scanf(" %[^\n]", password);
 
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        printf("\n...Error on database !!!");
-        return 0;
+        errorMessage("Database error");
+        return 1;
     }
 
     struct INFORMATION user;
@@ -43,36 +43,41 @@ int login()
             if (strcmp(password, user.password) == 0)
             {
                 FILE *authFile = fopen("data/authenticated.dat", "wb");
-                if (!authFile)
+                if (authFile == NULL)
                 {
-                    printf("\n...Error on database !!!");
-                    fclose(file);
-                    return 0;
+                    errorMessage("Database error");
+                    if (file)
+                        fclose(file);
+                    if (authFile)
+                        fclose(authFile);
+                    return 1;
                 }
 
                 fwrite(&user, sizeof(user), 1, authFile);
-                fclose(authFile);
-                fclose(file);
-                return 1;
+                if (file)
+                    fclose(file);
+                if (authFile)
+                    fclose(authFile);
+                return 0;
             }
-            printf("\nWrong password\n");
+            errorMessage("Wrong password");
             break;
         }
     }
 
-    if (!found)
-        printf("\nUser not found\n");
+    if (found == 0)
+    {
+        errorMessage("User not found");
+    }
 
-    fclose(file);
-    printf("\nAuthentication failed");
-    return 0;
+    if (file)
+        fclose(file);
+    return 1;
 }
 
 void logout()
 {
     remove("data/authenticated.dat");
-    system("clear");
-    displayIntro();
     exit(0);
 }
 
@@ -83,7 +88,7 @@ struct INFORMATION getAuthUser()
     FILE *file = fopen("data/authenticated.dat", "rb");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return emptyAuthUser;
     }
 
@@ -100,7 +105,7 @@ struct INFORMATION getUser(char *accountNumber)
     FILE *file = fopen("data/account.dat", "rb+");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return emptyUser;
     }
 
@@ -123,7 +128,7 @@ void saveAuthUser(struct INFORMATION authUser)
     FILE *file = fopen("data/authenticated.dat", "wb");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return;
     }
     fwrite(&authUser, sizeof(authUser), 1, file);
@@ -137,7 +142,7 @@ void saveUser(struct INFORMATION user)
     FILE *file = fopen("data/account.dat", "rb+");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return;
     }
     while (fread(&tempUser, sizeof(struct INFORMATION), 1, file))

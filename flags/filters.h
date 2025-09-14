@@ -1,3 +1,5 @@
+// this files contains filters that filter user's data and statement
+
 #include <stdio.h>
 #include "account.h"
 

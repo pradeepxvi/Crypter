@@ -23,7 +23,7 @@ void saveStatement(char *type, float amount, struct INFORMATION user)
     FILE *file = fopen("data/statement.dat", "ab");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return;
     }
 
@@ -37,13 +37,12 @@ void deposit()
 
     float amount;
 
-    printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
-    printf(" amount > _");
+    prompt(authUser.firstName, "Amount");
     scanf(" %f", &amount);
 
     if (amount <= 100 || amount > 100000)
     {
-        printf("\n...Deposit $100 to $100000!!!");
+        errorMessage("Deposit $100 to $100000");
         return;
     }
 
@@ -53,7 +52,7 @@ void deposit()
     saveUser(authUser);
 
     saveStatement("deposit", amount, authUser);
-    displayBalanceInfo("...Deposited", authUser.balance - amount, amount, authUser.balance);
+    displayBalanceInfo("Deposited", authUser.balance - amount, amount, authUser.balance);
 }
 
 void withdraw()
@@ -62,19 +61,18 @@ void withdraw()
 
     float amount;
 
-    printf("\n\n[%s %s]", authUser.firstName, authUser.lastName);
-    printf(" amount > _");
+    prompt(authUser.firstName, "Amount");
     scanf(" %f", &amount);
 
     if (amount > authUser.balance)
     {
-        printf("\n...Out of balance !!!");
+        errorMessage("Out of balance");
         return;
     }
 
     if (amount > 100000)
     {
-        printf("\n...Withdraw $100 to $ 100000!!!");
+        errorMessage("Withdraw $100 to $100000");
         return;
     }
 
@@ -84,73 +82,74 @@ void withdraw()
     saveUser(authUser);
 
     saveStatement("withdraw", amount, authUser);
-    displayBalanceInfo("...Withdrew", authUser.balance + amount, amount, authUser.balance);
+    displayBalanceInfo("Withdrew", authUser.balance + amount, amount, authUser.balance);
 };
 
 void transferBalance()
 {
-    char accountNumber[100];
-    printf("\nAccount number > _");
-    scanf(" %[^\n]", accountNumber);
-
     struct INFORMATION sender = getAuthUser();
+
+    char accountNumber[100];
+
+    prompt(sender.firstName, "Account number");
+    scanf(" %[^\n]", accountNumber);
 
     if (strcmp(accountNumber, sender.accountNumber) == 0)
     {
-        printf("\n...Cannot transfer to own !!!");
+        errorMessage("Cannot transfer to own");
         return;
     }
 
     struct INFORMATION receiver = getUser(accountNumber);
     if (strlen(receiver.accountNumber) == 0)
     {
-        printf("\n...User not found !!!");
+        errorMessage("User not found");
         return;
     }
 
-    printf("\n\n------------------------------------------");
-    printf("\n...Receiver Details");
-    printf("\n...Name           : %s %s", receiver.firstName, receiver.lastName);
-    printf("\n...Contact number : %s", receiver.contact);
-    printf("\n...Account number : %s", receiver.accountNumber);
-    printf("\n------------------------------------------");
+    printf(GREEN BOLD);
+    printf("\nReceiver Details");
+    printf("\nName           : %s %s", receiver.firstName, receiver.lastName);
+    printf("\nContact number : %s", receiver.contact);
+    printf("\nAccount number : %s\n", receiver.accountNumber);
+    printf(RESET);
 
     char confirmation;
-    printf("\n\nConfirm account ? [y/n] > _");
+    prompt(sender.firstName, "Confirm account ? [y/n]");
     scanf(" %c", &confirmation);
 
     if (tolower(confirmation) != 'y')
     {
-        printf("\n...Operation cancelled by user !!!");
+        errorMessage("Operation cancelled by user");
         return;
     }
 
     float amount;
-    printf("\n...amount > _");
+    prompt(sender.firstName, "Amount");
     scanf(" %f", &amount);
 
     if (amount > sender.balance)
     {
-        printf("\n...Out of balance !!!");
+        errorMessage("Out of balance");
         return;
     }
 
     if (amount < 1000 || amount > 10000)
     {
-        printf("\n...Transfer $1000 to $100000!!!");
+        errorMessage("Transfer $1000 to $100000");
         return;
     }
 
     sender.balance -= amount;
     receiver.balance += amount;
 
-    printf("\n...$%.2f is successfully transferred to %s %s", amount, receiver.firstName, receiver.lastName);
+    successMessage("Transfer successful");
 
     saveAuthUser(sender);
     saveUser(sender);
     saveUser(receiver);
     saveStatement("trasfer", amount, sender);
-    displayBalanceInfo("...Transferred", sender.balance + amount, amount, sender.balance);
+    displayBalanceInfo("Transferred", sender.balance + amount, amount, sender.balance);
 }
 
 void showUserStatements()
@@ -159,7 +158,7 @@ void showUserStatements()
     FILE *file = fopen("data/statement.dat", "rb");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database Error");
         return;
     }
 
@@ -170,10 +169,12 @@ void showUserStatements()
     {
         if (strcmp(authUser.accountNumber, statement.user.accountNumber) == 0)
         {
+            printf(GREEN BOLD);
             printf("\n[%s]", statement.date);
             printf(" | %s %s", statement.user.firstName, statement.user.lastName);
             printf(" | %s", statement.transaction);
             printf(" | Rs %.2f", statement.amount);
+            printf(RESET);
         }
     }
 

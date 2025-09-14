@@ -3,10 +3,10 @@
 
 int main()
 {
-
     remove("data/authenticated.dat");
     displayIntro();
 
-    theBegning();
+    crypter();
+
     return 0;
 }

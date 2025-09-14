@@ -99,7 +99,10 @@ void loanCase()
 void mainCase()
 {
 
-    login();
+    if (login() == 1)
+    {
+        return;
+    }
 
     while (1)
     {
@@ -202,7 +205,7 @@ void adminCase()
     }
 }
 
-void theBegning()
+void crypter()
 {
 
     displayUnAuthMenu();

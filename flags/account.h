@@ -1,10 +1,12 @@
-
+// this file contains structure INFORMATION to store user data
+//  and declaration of register, read and delete  function of user data
 
 #include <stdio.h>
 
 #ifndef ACCOUNT
 #define ACCOUNT
 
+// structure to store user data
 struct INFORMATION
 {
     char firstName[250];
@@ -18,9 +20,14 @@ struct INFORMATION
     char dateJoined[250];
 };
 
-// crud
+// declaration of
+// register function to make registration of new user
 void registerAccount();
+
+// function to display user data
 void showUserData();
+
+// function to delete user data along with statement and loan information
 void deleteAccount();
 
 #endif

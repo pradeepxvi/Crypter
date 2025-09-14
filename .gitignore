@@ -58,3 +58,7 @@ dkms.conf
 .vscode/
 crypter
 src/read.c
+
+
+test*
+flags/colors.h

@@ -1,3 +1,5 @@
+// this file show multiple cases used in whole system
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +22,6 @@ void loanCase();
 void mainCase();
 void filterDataCase();
 void adminCase();
-void theBegning();
+void crypter();
 
 #endif

@@ -14,7 +14,7 @@ int validateEmail(char *email)
 {
     if (strlen(email) < 15)
     {
-        printf("\n...Email too short !!!");
+        errorMessage("Email is too short");
         return 0;
     }
 
@@ -30,14 +30,14 @@ int validateEmail(char *email)
 
     if (!hasAtSymbol)
     {
-        printf("\nEnter a valid email address with '@'");
+        errorMessage("Email must contain @");
         return 0;
     }
 
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return 0;
     }
 
@@ -46,7 +46,7 @@ int validateEmail(char *email)
     {
         if (strcmp(email, temp.email) == 0)
         {
-            printf("\n...User with this email already exists !!!");
+            errorMessage("Email already exists");
             fclose(file);
             return 0;
         }
@@ -62,16 +62,16 @@ int validatePassword(char *password)
 
     if (strlen(password) < 8)
     {
-        printf("\n...Password too short %lu !!!", strlen(password));
+        errorMessage("Password is too short");
         return 0;
     }
 
-    printf("\n\nConfirm Password > _");
+    prompt("crypter", "Confirm password");
     scanf(" %[^\n]", confirmPassword);
 
     if (strcmp(password, confirmPassword) != 0)
     {
-        printf("\n...Password doesn't matched !!!");
+        errorMessage("Password must match");
         return 0;
     }
     return 1;
@@ -81,14 +81,15 @@ int validateContact(char *contact)
 {
     if (strlen(contact) != 10)
     {
-        printf("\nEnter 10 digit contact number : %lu", strlen(contact));
+        errorMessage("Enter 10 digit contact");
+
         return 0;
     }
 
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        printf("\n...Database Error !!!");
+        errorMessage("Database error");
         return 1;
     }
 
@@ -97,7 +98,7 @@ int validateContact(char *contact)
     {
         if (strcmp(contact, temp.contact) == 0)
         {
-            printf("\n...User with this contact already exists !!!");
+            errorMessage("Contact already exists");
             fclose(file);
             return 0;
         }
@@ -119,7 +120,7 @@ int validateAccountNumber(char *accountNumber)
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        perror("Error opening file");
+        errorMessage("Database error");
         return 1;
     }
 
@@ -128,7 +129,7 @@ int validateAccountNumber(char *accountNumber)
     {
         if (strcmp(accountNumber, temp.accountNumber) == 0)
         {
-            printf("\nUser with this account number already exists");
+            errorMessage("Account number already exists");
             fclose(file);
             return 0;
         }

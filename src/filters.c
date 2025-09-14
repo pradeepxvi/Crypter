@@ -14,7 +14,7 @@ void printFilterStatementAdmin(char *type, int limit)
     FILE *file = fopen("data/statement.dat", "rb");
     if (file == NULL)
     {
-        printf("...Database error !!!");
+        errorMessage("Database Error");
         return;
     }
 
@@ -25,10 +25,12 @@ void printFilterStatementAdmin(char *type, int limit)
     {
         if (strcmp(statement.transaction, type) == 0)
         {
+            printf(GREEN BOLD);
             printf("\n[%s]", statement.date);
             printf(" | %s %s", statement.user.firstName, statement.user.lastName);
             printf(" | %s", statement.transaction);
             printf(" | Rs %.2f", statement.amount);
+            printf(RESET);
             count++;
         }
         if (limit == count)
@@ -46,13 +48,14 @@ void filterStatement()
     while (1)
     {
         printf("\n");
-        printf("\n[1] Diposit");
-        printf("\n[2] Withdraw");
-        printf("\n[3] Loan issue");
-        printf("\n[4] EMI paid");
-        printf("\n[5] Loan paid");
-        printf("\n[0] Exit");
-        printf("\n\n[admin] > _");
+        printf("\n[ 1 ] Diposit");
+        printf("\n[ 2 ] Withdraw");
+        printf("\n[ 3 ] Loan issue");
+        printf("\n[ 4 ] EMI paid");
+        printf("\n[ 5 ] Loan paid");
+        printf("\n[ 0 ] Exit");
+        printf("\n");
+        prompt("admin", "");
 
         int filterChoice;
         scanf(" %d", &filterChoice);
@@ -61,7 +64,7 @@ void filterStatement()
             return;
 
         int limit;
-        printf("\n...number of data > _");
+        prompt("admin", "Number of data");
         scanf(" %d", &limit);
 
         switch (filterChoice)
@@ -92,7 +95,7 @@ void filterDataByEmail()
 
     if (file == NULL)
     {
-        printf("...Database error !!!");
+        errorMessage("Database Error");
         return;
     }
 
@@ -131,6 +134,7 @@ void filterDataByEmail()
     for (int i = 0; i < count; i++)
     {
         printf("\n\n------------------------------------------");
+        printf(GREEN BOLD);
         printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
         printf("\nEmail          : %s", users[i].email);
         printf("\nAddress        : %s", users[i].address);
@@ -138,6 +142,7 @@ void filterDataByEmail()
         printf("\nAccount number : %s", users[i].accountNumber);
         printf("\nBalance        : %.2f", users[i].balance);
         printf("\nDate joined    : %s", users[i].dateJoined);
+        printf(RESET);
         printf("\n------------------------------------------");
     }
 }
@@ -148,7 +153,7 @@ void filterDataByBalance(int status)
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)
     {
-        printf("...Database error !!!");
+        errorMessage("Database Error");
         return;
     }
 
@@ -197,6 +202,7 @@ void filterDataByBalance(int status)
     for (int i = 0; i < count; i++)
     {
         printf("\n\n------------------------------------------");
+        printf(GREEN BOLD);
         printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
         printf("\nEmail          : %s", users[i].email);
         printf("\nAddress        : %s", users[i].address);
@@ -204,6 +210,7 @@ void filterDataByBalance(int status)
         printf("\nAccount number : %s", users[i].accountNumber);
         printf("\nBalance        : %.2f", users[i].balance);
         printf("\nDate joined    : %s", users[i].dateJoined);
+        printf(RESET);
         printf("\n------------------------------------------");
     }
 
