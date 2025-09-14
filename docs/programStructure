@@ -1,0 +1,49 @@
+[ 1 ] LOGIN  
+        [ 1 ] ACCOUNT MANAGEMENT  
+                [ 1 ] VIEW ACCOUNT INFORMATION  
+                [ 2 ] DELETE ACCOUNT  
+                [ 0 ] RETURN
+
+        [ 2 ] BANKING SERVICES  
+                [ 1 ] DEPOSIT FUNDS  
+                [ 2 ] WITHDRAW FUNDS  
+                [ 3 ] VIEW STATEMENT  
+                [ 4 ] TRANSFER FUNDS  
+                [ 0 ] RETURN
+
+        [ 3 ] LOAN SERVICES  
+                [ 1 ] REQUEST LOAN  
+                [ 2 ] PAY EMI  
+                [ 3 ] COMPLETE LOAN  
+                [ 4 ] VIEW LOAN INFORMATION  
+                [ 0 ] RETURN
+
+        [ 0 ] LOGOUT
+
+[ 2 ] REGISTER  
+
+[ 3 ] ADMIN ACCESS 
+        [ 1 ] BACKUP DATA  
+        [ 2 ] RESTORE DATA  
+        [ 3 ] VIEW ALL USER DATA  
+        [ 4 ] READ ALL TRANSACTIONS  
+        [ 5 ] DELETE ALL TRANSACTIONS  
+        [ 6 ] VIEW ALL LOAN DATA  
+
+        [ 7 ] FILTER TRANSACTIONS  
+                [ 1 ] Diposit
+                [ 2 ] Withdraw
+                [ 3 ] Loan issue
+                [ 4 ] EMI paid
+                [ 5 ] Loan paid
+                [ 0 ] Exit
+
+        [ 8 ] FILTER USER DATA  
+                [ 1 ] FILTER BY EMAIL  
+                [ 2 ] SORT BALANCE LOW TO HIGH  
+                [ 3 ] SORT BALANCE HIGH TO LOW  
+                [ 0 ] RETURN
+        [ 0 ] EXIT
+[ 0 ] EXIT
+
+

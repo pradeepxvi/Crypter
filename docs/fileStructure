@@ -11,8 +11,9 @@
 ├── docs
 │   ├── crypter_01.png
 │   ├── fileStructure
+│   ├── programStructure.png
 │   └── programStructure.txt
-├── include
+├── flags
 │   ├── account.h
 │   ├── admin.h
 │   ├── auth.h
@@ -36,4 +37,4 @@
     ├── utils.c
     └── validator.c
 
-5 directories, 32 files
+5 directories, 33 files
