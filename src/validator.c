@@ -113,7 +113,7 @@ int validateAccountNumber(char *accountNumber)
     int len = 10;
     if (strlen(accountNumber) != len)
     {
-        printf("\nEnter %d digit account number : %lu", len, strlen(accountNumber));
+        errorMessage("Enter 10 digit account number");
         return 0;
     }
 
