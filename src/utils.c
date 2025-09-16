@@ -30,7 +30,7 @@ char *getCurrentDateTime()
 
 void displayIntro()
 {
-    system("clear");
+    system(CLS);
     FILE *file = fopen("data/intro.txt", "r");
 
     if (file == NULL)
@@ -165,7 +165,7 @@ void prompt(char *username, char *message)
 
 void errorMessage(char *message)
 {
-    printf("\n%s%s%s%s%s\n", YELLOW, ERROR_YMBOL, BOLD, message, RESET);
+    printf("\n%s%s%s%s%s\n", YELLOW, ERROR_SYMBOL, BOLD, message, RESET);
 }
 
 void successMessage(char *message)

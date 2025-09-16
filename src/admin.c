@@ -24,7 +24,9 @@ int adminAccess()
 
     // ask for admin password
     prompt("admin", "Password");
+    system("stty -echo");
     scanf(" %s", password);
+    system("stty echo");
 
     // check if admin id and password matched to "admin" and "admin" respectively or not
     if (strcmp(username, "admin") == 0 && strcmp(password, "admin") == 0)
@@ -219,20 +221,36 @@ void showAllUserData()
     struct INFORMATION user;
 
     // read all data in loop and display
+    printf(RED BOLD);
+
+    printf("\n");
+    printf("%-15s", "FIRSTNAME");
+    printf("%-15s", "LASTNAME");
+    printf("%-20s", "EMAIL");
+    printf("%-25s", "ADDRESS");
+    printf("%-12s", "CONTACT");
+    printf("%-12s", "ACC_NUMBER");
+    printf("%-22s", "DATEJOINED");
+    printf("%10s", "BALANCE");
+    printf("\n");
+
+    printf(GREEN);
+
     while (fread(&user, sizeof(user), 1, file))
     {
-        printf("\n\n------------------------------------------");
-        printf(GREEN BOLD);
-        printf("\n...Name           : %s %s", user.firstName, user.lastName);
-        printf("\n...Email          : %s", user.email);
-        printf("\n...Address        : %s", user.address);
-        printf("\n...Contact number : %s", user.contact);
-        printf("\n...Account number : %s", user.accountNumber);
-        printf("\n...Balance        : $%.2f", user.balance);
-        printf("\n...Date joined    : %s", user.dateJoined);
-        printf(RESET);
-        printf("\n------------------------------------------");
+        printf("\n");
+        printf("%-15s", user.firstName);
+        printf("%-15s", user.lastName);
+        printf("%-20s", user.email);
+        printf("%-25s", user.address);
+        printf("%-12s", user.contact);
+        printf("%-12s", user.accountNumber);
+        printf("%-22s", user.dateJoined);
+        printf("$ %.2f", user.balance);
     }
+    printf(RESET);
+
+    fclose(file);
 }
 
 void showStatements()

@@ -67,7 +67,9 @@ int validatePassword(char *password)
     }
 
     prompt("crypter", "Confirm password");
+    system("stty -echo");
     scanf(" %[^\n]", confirmPassword);
+    system("stty echo");
 
     if (strcmp(password, confirmPassword) != 0)
     {

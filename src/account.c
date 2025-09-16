@@ -73,7 +73,9 @@ void registerAccount()
     do
     {
         prompt("crypter", "Password");
+        system("stty -echo");
         scanf(" %[^\n]", user.password);
+        system("stty echo");
     } while (!validatePassword(user.password));
 
     // set user's balance to 0

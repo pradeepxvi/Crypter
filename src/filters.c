@@ -131,20 +131,34 @@ void filterDataByEmail()
         }
     }
 
+    printf(RED BOLD);
+
+    printf("\n");
+    printf("%-15s", "FIRSTNAME");
+    printf("%-15s", "LASTNAME");
+    printf("%-20s", "EMAIL");
+    printf("%-25s", "ADDRESS");
+    printf("%-12s", "CONTACT");
+    printf("%-12s", "ACC_NUMBER");
+    printf("%-20s", "DATEJOINED");
+    printf("%10s", "BALANCE");
+    printf("\n");
+
+    printf(GREEN);
+
     for (int i = 0; i < count; i++)
     {
-        printf("\n\n------------------------------------------");
-        printf(GREEN BOLD);
-        printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
-        printf("\nEmail          : %s", users[i].email);
-        printf("\nAddress        : %s", users[i].address);
-        printf("\nContact number : %s", users[i].contact);
-        printf("\nAccount number : %s", users[i].accountNumber);
-        printf("\nBalance        : %.2f", users[i].balance);
-        printf("\nDate joined    : %s", users[i].dateJoined);
-        printf(RESET);
-        printf("\n------------------------------------------");
+        printf("\n");
+        printf("%-15s", users[i].firstName);
+        printf("%-15s", users[i].lastName);
+        printf("%-20s", users[i].email);
+        printf("%-25s", users[i].address);
+        printf("%-12s", users[i].contact);
+        printf("%-12s", users[i].accountNumber);
+        printf("%-20s", users[i].dateJoined);
+        printf("$ %.2f", users[i].balance);
     }
+    printf(RESET);
 }
 
 void filterDataByBalance(int status)
@@ -199,20 +213,34 @@ void filterDataByBalance(int status)
         }
     }
 
+    printf(RED BOLD);
+
+    printf("\n");
+    printf("%-15s", "FIRSTNAME");
+    printf("%-15s", "LASTNAME");
+    printf("%-20s", "EMAIL");
+    printf("%-25s", "ADDRESS");
+    printf("%-12s", "CONTACT");
+    printf("%-12s", "ACC_NUMBER");
+    printf("%-22s", "DATEJOINED");
+    printf("%10s", "BALANCE");
+    printf("\n");
+
+    printf(GREEN);
+
     for (int i = 0; i < count; i++)
     {
-        printf("\n\n------------------------------------------");
-        printf(GREEN BOLD);
-        printf("\nName           : %s %s", users[i].firstName, users[i].lastName);
-        printf("\nEmail          : %s", users[i].email);
-        printf("\nAddress        : %s", users[i].address);
-        printf("\nContact number : %s", users[i].contact);
-        printf("\nAccount number : %s", users[i].accountNumber);
-        printf("\nBalance        : %.2f", users[i].balance);
-        printf("\nDate joined    : %s", users[i].dateJoined);
-        printf(RESET);
-        printf("\n------------------------------------------");
+        printf("\n");
+        printf("%-15s", users[i].firstName);
+        printf("%-15s", users[i].lastName);
+        printf("%-20s", users[i].email);
+        printf("%-25s", users[i].address);
+        printf("%-12s", users[i].contact);
+        printf("%-12s", users[i].accountNumber);
+        printf("%-22s", users[i].dateJoined);
+        printf("$ %.2f", users[i].balance);
     }
+    printf(RESET);
 
     fclose(file);
 }

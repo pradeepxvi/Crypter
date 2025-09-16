@@ -19,7 +19,9 @@ int login()
     scanf(" %[^\n]", id);
 
     prompt("crypter", "Password");
+    system("stty -echo");
     scanf(" %[^\n]", password);
+    system("stty echo");
 
     FILE *file = fopen("data/account.dat", "rb");
     if (file == NULL)

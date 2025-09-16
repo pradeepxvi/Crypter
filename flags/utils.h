@@ -5,8 +5,7 @@
 #ifndef UTILS
 #define UTILS
 
-#define INPUT_SYMBOL "❯"
-
+// color code
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
 #define ITALIC "\033[3m"
@@ -18,8 +17,18 @@
 #define RED "\033[31m"
 #define GRAY "\033[90m"
 
+// other stufffs
+// -windows
+// #define INPUT_SYMBOL ">_"
+// #define SUCCESS_SYMBOL "* "
+// #define ERROR_SYMBOL "!! "
+// #define CLS "cls"
+
+// -linux
+#define INPUT_SYMBOL "❯"
 #define SUCCESS_SYMBOL "✔ "
-#define ERROR_YMBOL "✘ "
+#define ERROR_SYMBOL "✘ "
+#define CLS "clear"
 
 #define CRYPTER "crypter"
 
