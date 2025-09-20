@@ -88,10 +88,11 @@ void displayAdminMenu()
     printf("\n[ 2 ] RESTORE DATA");
     printf("\n[ 3 ] VIEW ALL USER DATA");
     printf("\n[ 4 ] READ ALL TRANSACTIONS");
-    printf("\n[ 5 ] DELETE ALL TRANSACTIONS");
+    printf("\n[ 5 ] DELETE TRANSACTIONS");
     printf("\n[ 6 ] VIEW ALL LOAN DATA");
     printf("\n[ 7 ] FILTER TRANSACTIONS");
     printf("\n[ 8 ] FILTER USER DATA");
+    printf("\n[ 9 ] DELETE ACCOUNT");
     printf("\n[ 0 ] EXIT");
     printf("\n");
     prompt("ADMIN", "");
@@ -103,7 +104,6 @@ void displayAccountMenu()
 
     printf("\n");
     printf("\n[ 1 ] VIEW ACCOUNT INFORMATION");
-    printf("\n[ 2 ] DELETE ACCOUNT");
     printf("\n[ 0 ] RETURN");
     printf("\n");
     prompt(authUser.firstName, "");

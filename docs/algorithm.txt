@@ -1,0 +1,112 @@
+Algorithm 1: Main Menu
+Step 1: Start
+Step 2: Display Main Menu with options: Register, Login, Admin, Exit
+Step 3: Read user choice
+Step 4: If choice = Register , Go to Register Module
+Step 5: If choice = Login , Go to Login Module
+Step 6: If choice = Admin , Go to Admin Module
+Step 8: If choice = Exit , Stop program
+
+
+Algorithm 2: Register Account
+Step 1: Start
+Step 2: Initialize user structure and set user.dateJoined to current date/time
+Step 3: Prompt and read firstName, lastName, email (validate), address, contact (validate)
+Step 4: Ask if account number = contact; if yes, copy contact, else prompt and validate account number
+Step 5: Prompt and read password (validate, hidden input)
+Step 6: Set user.balance = 0
+Step 7: Open account.dat; if fails, show error and stop
+Step 8: Write user to file and close it
+Step 9: Backup data and display success message
+Step 10: Stop
+
+
+Algorithm 3: Bank Menu
+Step 1: Start
+Step 2: Display Banking Menu with options: Deposit, Withdraw, Statement, Transfer
+Step 3: Read user's choice
+Step 4: If choice = Deposit, ask for the amount to deposit
+Step 5: If the amount is less than 100, display an error message and go back to Step 2
+Step 6: If the amount is greater than or equal to 100, process the deposit and go back to Step 2
+Step 7: If choice = Withdraw, ask for the amount to withdraw
+Step 8: If the amount is greater than the current balance OR the amount is less than 100, display an error message and go back to Step 2
+Step 9: If the amount is less than or equal to the balance AND the amount is greater than or equal to 100, process the withdrawal and go back to Step 2
+Step 10: If choice = Statement, display the account statement and go back to Step 2
+Step 11: If choice = Transfer, ask for the amount and the recipient's account number
+Step 12: If the amount is less than 100 OR the amount is greater than the current balance OR the recipient's account is invalid, display an error message and go back to Step 2
+Step 13: If the amount is greater than or equal to 100 AND the amount is less than or equal to the balance AND the recipient's account is valid, process the transfer and go back to Step 2
+Step 14: Stop
+
+
+
+
+Algorithm 4: Loan Menu
+Step 1: Start
+Step 2: Display Loan Menu with options: Request Loan, Pay EMI, Pay Loan, Get Loan Info
+Step 3: Read user's choice
+Step 4: If choice = Request Loan, check if the user already has an active loan
+Step 5: If the user already has a loan, display a message and go back to Step 2
+Step 6: If the user does not have a loan, ask for the loan amount and duration
+Step 7: Update the user's balance with the new loan amount and go back to Step 2
+Step 8: If choice = Pay EMI, ask for the EMI amount to be paid
+Step 9: Ask for user confirmation (y/n) to proceed with payment
+Step 10: If the user confirms (y), check if their balance is sufficient to cover the EMI amount
+Step 11: If the balance is greater than or equal to the amount, process the payment by debiting the user's account and crediting the loan account, then go back to Step 2
+Step 12: If the balance is insufficient, display an error message and go back to Step 2
+Step 13: If the user does not confirm (n), go back to Step 2
+Step 14: If choice = Pay Loan, ask for the full loan amount to be paid
+Step 15: Ask for user confirmation (y/n) to proceed with payment
+Step 16: If the user confirms (y), check if their balance is sufficient to cover the full loan amount
+Step 17: If the balance is greater than or equal to the amount, process the payment by debiting the user's account and crediting the loan account, then go back to Step 2
+Step 18: If the balance is insufficient, display an error message and go back to Step 2
+Step 19: If the user does not confirm (n), go back to Step 2
+Step 20: If choice = Get Loan Info, display the user's loan information and go back to Step 2
+Step 21: Stop
+
+
+
+
+Algorithm 5: Admin Menu
+Algorithm 1: Admin Functions
+Step 1: Start
+Step 2: Prompt for admin username and password
+Step 3: Verify credentials; if unauthorized, display error and stop
+Step 4: Display admin menu with options: Backup, Withdraw, Get All Data, Filter Statement, Filter Data
+Step 5: If choice = Backup, initiate backup process
+Step 6: If choice = Withdraw, allow admin to perform withdrawal
+Step 7: If choice = Get All Data:
+  a. Option 1: Read All Statement → display all account statements
+  b. Option 2: Delete All Statement → delete all existing statements
+  c. Option 3: Read All Loans → display all active loans
+Step 8: If choice = Filter Statement:
+  a. Prompt for filter type: Deposit, Withdraw, Loan Issue, EMI Paid
+  b. Prompt for number of entries to display
+  c. Display filtered statements
+Step 9: If choice = Filter Data:
+  a. Prompt for filter criteria: Email, Loan Paid, Balance Low→High, Balance High→Low
+  b. Display filtered data
+Step 10: After task completion, return to main menu
+Step 11: Stop
+
+
+
+
+
+Algorithm: User Login
+Step 1: Start
+Step 2: Prompt and read id (Email / Account Number / Contact)
+Step 3: Prompt and read password (input hidden)
+Step 4: Open account.dat file for reading; if fails, display "Database error" and stop
+Step 5: Initialize found = 0
+Step 6: Loop through each user record in file:
+  a. If id matches user.email OR user.accountNumber OR user.contact then:
+   i. Set found = 1
+   ii. If password matches user.password then:
+    - Open authenticated.dat file for writing; if fails, display error and stop
+    - Write user to authenticated.dat
+    - Close both files and return success (0)
+   iii. Else display "Wrong password" and exit loop
+Step 7: If found == 0, display "User not found"
+Step 8: Close file(s) if open
+Step 9: Return failure (1)
+Step 10: Stop

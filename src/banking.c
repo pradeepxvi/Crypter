@@ -148,7 +148,8 @@ void transferBalance()
     saveAuthUser(sender);
     saveUser(sender);
     saveUser(receiver);
-    saveStatement("trasfer", amount, sender);
+    saveStatement("send", amount, sender);
+    saveStatement("receive", amount, receiver);
     displayBalanceInfo("Transferred", sender.balance + amount, amount, sender.balance);
 }
 

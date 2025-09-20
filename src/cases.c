@@ -22,9 +22,6 @@ void accountCase()
     case 1:
         showUserData();
         break;
-    case 2:
-        deleteAccount();
-        break;
     case 0:
         break;
     default:
@@ -196,6 +193,8 @@ void adminCase()
             break;
         case 8:
             filterDataCase();
+        case 9:
+            deleteAccount();
             break;
         case 0:
             return;

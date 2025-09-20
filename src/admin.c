@@ -280,21 +280,67 @@ void showStatements()
 
 void deleteStatements()
 {
+    // ask for account number
+    char accountNumber[11];
+    prompt("admin", "Enter account number to delete statements");
+    scanf(" %[^\n]", accountNumber);
 
-    // confirm user to delete statements
+    // confirm before deleting
     char confirmation;
-    prompt("admin", "Are you sure [y/n]");
+    struct INFORMATION st_user = getUser(accountNumber);
+    printf("\nAre you sure [y/n]: ");
     scanf(" %c", &confirmation);
 
-    // if user doesn't allows terminat the program
     if (tolower(confirmation) != 'y')
     {
         errorMessage("Operation aborted");
         return;
     }
-    // if user allows delete statement.dat file
+
+    FILE *file = fopen("data/statement.dat", "rb");
+    FILE *tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (!file || !tempFile)
+    {
+        errorMessage("Database Error");
+        if (file)
+            fclose(file);
+        if (tempFile)
+            fclose(tempFile);
+        return;
+    }
+
+    struct STATEMENT statement;
+    int deleted = 0;
+
+    // copy all statements except the ones that match accountNumber
+    while (fread(&statement, sizeof(statement), 1, file))
+    {
+        if (strcmp(statement.user.accountNumber, accountNumber) == 0)
+        {
+            deleted = 1; // Found matching statement → skip writing
+        }
+        else
+        {
+            fwrite(&statement, sizeof(statement), 1, tempFile);
+        }
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    // replace old file with filtered file
     remove("data/statement.dat");
-    successMessage("Statement deleted successfully");
+    rename("data/tempFile.dat", "data/statement.dat");
+
+    if (deleted)
+    {
+        successMessage("Statements deleted successfully for this user.");
+    }
+    else
+    {
+        errorMessage("No statements found for this account.");
+    }
 }
 
 void showLoans()
@@ -323,4 +369,99 @@ void showLoans()
         printf("\n------------------------------------------");
     }
     fclose(file);
+}
+
+// delete account
+void deleteAccount()
+{
+    char accountNumber[11];
+    prompt("ADMIN", "Enter account number");
+    scanf(" %[^\n]", accountNumber);
+
+    struct INFORMATION targetUser = getUser(accountNumber);
+
+    // --- Delete from account.dat ---
+    FILE *file = fopen("data/account.dat", "rb");
+    FILE *tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (!file || !tempFile)
+    {
+        errorMessage("Database Error");
+        if (file)
+            fclose(file);
+        if (tempFile)
+            fclose(tempFile);
+        return;
+    }
+
+    struct INFORMATION current;
+    int deleted = 0;
+
+    while (fread(&current, sizeof(current), 1, file))
+    {
+        if (strcmp(current.accountNumber, accountNumber) == 0)
+        {
+            deleted = 1; // Found matching account → skip writing
+        }
+        else
+        {
+            fwrite(&current, sizeof(current), 1, tempFile);
+        }
+    }
+
+    fclose(file);
+    fclose(tempFile);
+
+    if (deleted)
+    {
+        remove("data/account.dat");
+        rename("data/tempFile.dat", "data/account.dat");
+    }
+    else
+    {
+        errorMessage("Account not found.");
+        remove("data/tempFile.dat");
+        return;
+    }
+
+    // --- Delete from loan.dat ---
+    file = fopen("data/loan.dat", "rb");
+    tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (file && tempFile)
+    {
+        struct LOAN loan;
+        while (fread(&loan, sizeof(loan), 1, file))
+        {
+            if (strcmp(loan.user.accountNumber, accountNumber) != 0)
+                fwrite(&loan, sizeof(loan), 1, tempFile);
+        }
+        fclose(file);
+        fclose(tempFile);
+        remove("data/loan.dat");
+        rename("data/tempFile.dat", "data/loan.dat");
+    }
+
+    // --- Delete from statement.dat ---
+    file = fopen("data/statement.dat", "rb");
+    tempFile = fopen("data/tempFile.dat", "wb");
+
+    if (file && tempFile)
+    {
+        struct STATEMENT statement;
+        while (fread(&statement, sizeof(statement), 1, file))
+        {
+            if (strcmp(statement.user.accountNumber, accountNumber) != 0)
+                fwrite(&statement, sizeof(statement), 1, tempFile);
+        }
+        fclose(file);
+        fclose(tempFile);
+        remove("data/statement.dat");
+        rename("data/tempFile.dat", "data/statement.dat");
+    }
+
+    // --- Remove session file ---
+    remove("data/authenticated.dat");
+
+    successMessage("User deleted successfully.");
 }
